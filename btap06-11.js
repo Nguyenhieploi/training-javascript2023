@@ -1,9 +1,20 @@
 //=================================== Bài 1 ===========================================
-// function diemTrungBinh(toan,van,tienganh){
-//     var tongDiem = (toan + van + tienganh) / 3;
-//     console.log("bài 1 kết quả là: " + tongDiem); 
+// let input = {
+//     toan: 7,
+//     van: 8,
+//     tiengAnh: 9,
+//   };
+// let input = [7,8,9]
+// function diemTrungBinh(diem){
+//     // var tongDiem = (toan + van + tienganh) / 3;
+//     // return tongDiem;
+//     // var tongDiem = (diem.toan + diem.van + diem.tiengAnh) / 3;
+//     var tongDiem = (diem[0] + diem[1] + diem[2]) / 3;
+//     console.log(tongDiem);
 // }
-// diemTrungBinh(7,8,9); 
+
+// var ketQua = diemTrungBinh(input)
+// console.log(ketQua);
 
 // =================================== Bài 2 =========================================
 
@@ -22,7 +33,8 @@
 //     return true;
 // }
 
-// var arr = [2,3,4,5,6,7,89,97]
+// var arr = [2,3,4,5,6,7,9,89,97]
+
 // for(var j = 0; j < arr.length; j++){
 //     if(kiemtra(arr[j]) === true){
 //         console.log(arr[j] + " là số nguyên tố");
@@ -33,12 +45,27 @@
 // }
 
 // ======================================= Bài 3 ======================================
-// var danhBa = {
-//     ten: "Nguyen Hiep Loi",
-//     email: "loi@gmail.com",
-//     phone: 3342797979,
-// }
-// console.log(danhBa);
+// var danhBa = [
+//     {
+//         ten: "Nguyen Hiep Loi",
+//         email: "loi@gmail.com",
+//         phone: 3342797979,
+//     },
+//     {
+//         ten: "Nguyen Hiep Sang",
+//         email: "loi@gmail.com",
+//         phone: 99999999,
+//     },
+//     {
+//         ten: "Nguyen Hiep An",
+//         email: "loi@gmail.com",
+//         phone: 988888888,
+//     }
+// ]
+
+// danhBa.forEach(element => {
+//     console.log(element.ten +" "+ "phone: "+  element.phone);
+// });
 
 // ======================================== bài 4 =====================================
 // var student =[
@@ -67,11 +94,18 @@
 //         diemSo: 1
 //     }
 // ]
-// function tangDan(a,b){
-//     return a.diemSo- b.diemSo;
-// }
-// console.log(student.sort(tangDan));
+// // function tangDan(a,b){
+// //     return b.diemSo - a.diemSo 
+// // }
+// // console.log(student.sort(tangDan));
 
+// var diemSo = student.filter(element => element.diemSo >= 8);
+// // console.log(diemSo[0].fullname);
+// // diemSo.forEach(element => {
+// //     console.log(element.fullname)
+// // });
+// var getName = student.find((element) => element.fullname === "Nguyen Hiep B");
+// console.log(getName.fullname);
 
 //=========================================== Bài 5 =====================================
 // function chuyenDoi(c, f) {
@@ -86,17 +120,36 @@
 // }
 // chuyenDoi(100,300)
 
+// function chuyenDoi(type, value){
+//    if(type === "C"){
+//     var doC = (value - 32) / 1.8;
+//      console.log("độ F chuyển sang độ C là: " + doC);
+//    }
+//    if(type === "F"){
+//     var doF = value * 1.8 + 32;
+//     console.log("độ C chuyển sang độ F là: " + doF);
+//    }
+// }
+
+// chuyenDoi("C", 50)
+// chuyenDoi("F", 70)
+
+
+
 // ======================================== Bài 6 ======================================
-// var numbers = [1,2,3,4,5,1,2,3];
+// var numbers = [9,2,3,4,5,1,2,3];
 
 // var filterNumbers = numbers.filter((e,index)=>{
 //     return numbers.indexOf(e) === index; // tìm vị trí
 // })
+// console.log(numbers.indexOf(2));
 // console.log(filterNumbers);
 
 // ======================================== Bài 7 ==================================
-// var numbers = [1,2,3,7,10,20,30];
+// var numbers = [1,2,3,7,10,20,30,2.4];
+
 // var sums = 0;
+
 // for(var i = 0; i < numbers.length; i++){
 //     if(numbers[i] % 2 === 0){
 //         sums += numbers[i];
@@ -106,13 +159,28 @@
 // console.log("Tổng số chẵn là " + sums);
 
 // ====================================== Bài 8 ======================================
-// var texts = "racecar";
-// for(var i =0; i < texts.length; i++){
-//         if( texts[i] === CHƯA BIẾT CODE GÌ ]){
-//             console.log("chuỗi đảo ngữ");
-//         } 
-//     }
-  
+var texts = "racecar";
+var tong = 0;
+for(var i = 0; i <= 2; i++){
+    //  console.log(i);
+    // console.log(texts[i]);
+    // console.log(texts.length-i-1);
+    // console.log(texts[texts.length-i-1]);   
+    if(texts[i] === texts[texts.length-i-1]){
+        tong+= 1
+        // console.log("đây la chữ đảo ngữ", texts[i]);
+    }
+
+}
+if(tong === 3){
+    console.log("đảo ngữ");
+}
+else{
+    console.log("kh đảo ngữ");
+}
+console.log(tong);
+// tại sao lại chạy từ 0 => 2 
+// tại sao lại so sánh = 3 thì là đảo ngữ
 
 // ==================================== BÀI 9 ======================================
 // for(var i = 2; i <= 9;i++){
@@ -169,57 +237,57 @@
 
 
 // sd hàm filter 
-function fillterFull(diem,tuoi){
-    var students = [
-        {
-            fullname: "Nguyen Hiep Loi",
-            diem: 10,
-            tuoi: 20
-        },
-        {
-            fullname: "Nguyen Hiep Trung",
-            diem: 5,
-            tuoi: 20
-        },
-        {
-            fullname: "Nguyen Hiep Nghĩa",
-            diem: 5,
-            tuoi: 22
-        },
-        {
-            fullname: "Nguyen Hiep Phong",
-            diem: 5,
-            tuoi: 30
-        },
-        {
-            fullname: "Nguyen Hiep Tài",
-            diem: 5,
-            tuoi: 30
-        }
-    ]
+// function fillterFull(diem,tuoi){
+//     var students = [
+//         {
+//             fullname: "Nguyen Hiep Loi",
+//             diem: 10,
+//             tuoi: 20
+//         },
+//         {
+//             fullname: "Nguyen Hiep Trung",
+//             diem: 5,
+//             tuoi: 20
+//         },
+//         {
+//             fullname: "Nguyen Hiep Nghĩa",
+//             diem: 5,
+//             tuoi: 22
+//         },
+//         {
+//             fullname: "Nguyen Hiep Phong",
+//             diem: 5,
+//             tuoi: 30
+//         },
+//         {
+//             fullname: "Nguyen Hiep Tài",
+//             diem: 5,
+//             tuoi: 30
+//         }
+//     ]
 
-    var filterDiem = students.filter(element => element.diem === diem)
-    if(filterDiem.length === 0){
-        console.log("Không có học sinh nào có điểm");
-    }else{
-        filterDiem.forEach(element => {
-            console.log(element.fullname +" có điểm là:  " + element.diem );
+//     var filterDiem = students.filter(element => element.diem === diem)
+//     if(filterDiem.length === 0){
+//         console.log("Không có học sinh nào có điểm");
+//     }else{
+//         filterDiem.forEach(element => {
+//             console.log(element.fullname +" có điểm là:  " + element.diem );
            
-        });
-    }
+//         });
+//     }
    
-    var filterTuoi = students.filter(element => element.tuoi < tuoi)
-    if(filterTuoi.length === 0 ){
-        console.log("Không có học sinh nào có tuổi");
-    }else{
-        filterTuoi.forEach(element =>{
-            console.log(element.fullname +" có tuổi là:  " + element.tuoi );
-        })
-    }
+//     var filterTuoi = students.filter(element => element.tuoi < tuoi)
+//     if(filterTuoi.length === 0 ){
+//         console.log("Không có học sinh nào có tuổi");
+//     }else{
+//         filterTuoi.forEach(element =>{
+//             console.log(element.fullname +" có tuổi là:  " + element.tuoi );
+//         })
+//     }
   
-}
+// }
 
-var diem = 5;
-var tuoi = 30;
+// var diem = 5;
+// var tuoi = 30;
 
-fillterFull(diem,tuoi);
+// fillterFull(diem,tuoi);
