@@ -161,13 +161,14 @@
 // ====================================== Bài 8 ======================================
 var texts = "racecar";
 var tong = 0;
+// Chạy từ i = 0 dến i = 2
 for(var i = 0; i <= 2; i++){
     //  console.log(i);
     // console.log(texts[i]);
     // console.log(texts.length-i-1);
     // console.log(texts[texts.length-i-1]);   
     if(texts[i] === texts[texts.length-i-1]){
-        tong+= 1
+         tong+= 1 // Tăng biến tổng lên 1 nếu giống nhau
         // console.log("đây la chữ đảo ngữ", texts[i]);
     }
 
@@ -179,8 +180,13 @@ else{
     console.log("kh đảo ngữ");
 }
 console.log(tong);
-// tại sao lại chạy từ 0 => 2 
-// tại sao lại so sánh = 3 thì là đảo ngữ
+// Câu hỏi 1: tại sao lại chạy từ 0 => 2 
+// Chạy từ 0 đến 2 vì muốn so sanh 3 chữ đầu và cuối, index sẽ là 0 1 2 e -2 -1 0 ( tương dương r a c)
+
+//Câu hỏi 2:  tại sao lại so sánh = 3 thì là đảo ngữ
+// Vì đang so sánh vị trí, nên 0 1 2 sẽ tổng có 3 vị trí 
+
+
 
 // ==================================== BÀI 9 ======================================
 // for(var i = 2; i <= 9;i++){
