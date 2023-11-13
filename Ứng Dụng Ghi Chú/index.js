@@ -1,5 +1,17 @@
 var list = [];
+
+
 function add(){
+    var storageKey = 'listNote';
+    // GetItem - Chuyển từ chuỗi JSON sang đối tượng 
+    var storageList = localStorage.getItem(storageKey);
+    if(storageList){
+        list = JSON.parse(storageList);
+    }
+    else{
+        list = []
+    }
+
     var note = {
         id:1,
         content: null
@@ -26,6 +38,9 @@ function add(){
    
     // Gọi hàm show list note đã thêm
    show()
+
+   // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
+   localStorage.setItem(storageKey,JSON.stringify(list))
 }
 function show(){
     var results =  document.getElementById("results");
@@ -37,22 +52,45 @@ function show(){
             <li>
                 <strong>ID: </strong><span> ${element.id}</span>
                 <strong>Content: </strong><span>${element.content}</span>
-                <a class="remove" onclick="remove()"><i class="fas fa-trash"></i></a>
+                <a class="remove" onclick="remove('${element.id}')"><i class="fas fa-trash"></i></a>
+                <a class="edit" onclick="edit('${element.id}')"><i class="fas fa-edit"></i></a>
             </li>
       
         `
     })
   
 }
-console.log(list);
+console.log("danh sách hiện tại là:",list);
 
-function remove(){
-    // var index = list.map(e =>{
-    //     return e.id;
-    // }).indexOf(id)
-    // list.splice(index,1)
-    var lists = list.filter(e =>{
-        return e.id == id;
-    })
-    console.log(lists);
+function remove(id){
+    console.log("id là", id);
+     list = list.filter((element) => element.id !== id);
+    show();
+}
+
+function edit(id){
+   var editItem = list.find((element) => {
+        if(element.id === id){
+            return true;
+        }
+   });
+   var editId = document.getElementById("edit-id");
+   var editContent = document.getElementById("edit-content");
+
+   editId.value = editItem.id;
+   editContent.value = editItem.content
+    document.getElementById("edit-main").style.display = "block";
+}
+
+function saveEdit(){
+    document.getElementById("edit-main").style.display = "none";
+    
+    var editId = document.getElementById("edit-id");
+    var editContent = document.getElementById("edit-content");
+    
+    // tìm vị trí có id = với id edit
+    var editedItemIndex = list.findIndex((element) => element.id === editId.value);
+    console.log(editedItemIndex);
+    list[editedItemIndex].content = editContent.value;
+    show();
 }

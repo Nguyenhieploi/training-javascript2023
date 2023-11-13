@@ -3,20 +3,26 @@
     padding: 0;
     box-sizing: border-box;
 }
+body{
+    color: #fff !important;
+    background: rgb(76,67,232);
+background: linear-gradient(90deg, rgba(76,67,232,1) 0%, rgba(241,40,209,1) 100%, rgba(0,212,255,1) 100%);
+}
 .app h3{
     text-align: center;
 }
-.app-main{
+.app-main, #edit-main{
     display: grid;
     align-items: center;
     margin-top: 30px;
 }
-.app-main #content{
+.app-main #content, #edit-content{
     width: 100%;
     outline: none;
     padding: 10px;
+    height: 100px;
 }
-.app-main .add{
+ .add{
     margin-top: 30px;
     border: none;
     color: #fff;
@@ -32,11 +38,20 @@
 .list li{
     list-style: none;
     padding: 10px 10px;
-    background: #ddd;
+    background: #28282861;
     margin-top: 10px;
 }
 .remove{
-    color: red !important;
+    color: rgb(205, 34, 34) !important;
     cursor: pointer;
     margin-left: 10px;
+}
+.edit{
+    color: rgb(21, 255, 0) !important;
+    cursor: pointer;
+    margin-left: 10px;
+}
+#edit-main{
+    margin-top: 20px;
+    display: none;
 }

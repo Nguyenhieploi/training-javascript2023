@@ -15,6 +15,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="app">
+              
               <h3>Ứng Dụng Ghi Chú (Note-taking App)</h3>
               <div class="app-main">
                 <span>ID</span>
@@ -22,13 +23,25 @@
                 <span>Nội dung ghi chú</span>
                 <textarea name="content" id="content" cols="30" rows="10"></textarea>
                 <button class="add" onclick="add()">Thêm ghi chú</button>
+              </div>
+              <hr>
+                <!-- Edit -->
+                <div id="edit-main">
+                  <h5>Sửa ghi chú</h5>
+                  <span>ID</span>
+                  <input type="text" value="" disabled id="edit-id">
+                  <span>Nội dung ghi chú</span>
+                  <textarea name="content" id="edit-content" cols="30" rows="10"></textarea>
+                  <button class="add" onclick="saveEdit()">Lưu ghi chú</button>
+                </div>
+
                 <div class="list">
                   <h5>Ghi chú đã thêm</h5>
                   <ul>
                     <div id="results"></div>
                   </ul>    
                 </div>
-              </div>
+             
             </div>
           </div>
         </div>
