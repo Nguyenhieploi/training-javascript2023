@@ -159,27 +159,27 @@
 // console.log("Tổng số chẵn là " + sums);
 
 // ====================================== Bài 8 ======================================
-var texts = "racecar";
-var tong = 0;
-// Chạy từ i = 0 dến i = 2
-for(var i = 0; i <= 2; i++){
-    //  console.log(i);
-    // console.log(texts[i]);
-    // console.log(texts.length-i-1);
-    // console.log(texts[texts.length-i-1]);   
-    if(texts[i] === texts[texts.length-i-1]){
-         tong+= 1 // Tăng biến tổng lên 1 nếu giống nhau
-        // console.log("đây la chữ đảo ngữ", texts[i]);
-    }
+// var texts = "racecar";
+// var tong = 0;
+// // Chạy từ i = 0 dến i = 2
+// for(var i = 0; i <= 2; i++){
+//     //  console.log(i);
+//     // console.log(texts[i]);
+//     // console.log(texts.length-i-1);
+//     // console.log(texts[texts.length-i-1]);   
+//     if(texts[i] === texts[texts.length-i-1]){
+//          tong+= 1 // Tăng biến tổng lên 1 nếu giống nhau
+//         // console.log("đây la chữ đảo ngữ", texts[i]);
+//     }
 
-}
-if(tong === 3){
-    console.log("đảo ngữ");
-}
-else{
-    console.log("kh đảo ngữ");
-}
-console.log(tong);
+// }
+// if(tong === 3){
+//     console.log("đảo ngữ");
+// }
+// else{
+//     console.log("kh đảo ngữ");
+// }
+// console.log(tong);
 // Câu hỏi 1: tại sao lại chạy từ 0 => 2 
 // Chạy từ 0 đến 2 vì muốn so sanh 3 chữ đầu và cuối, index sẽ là 0 1 2 e -2 -1 0 ( tương dương r a c)
 
@@ -197,11 +197,15 @@ console.log(tong);
 
 // ==================================== BÀI 10 ========================================
 // function chiSoBMI(chieucao, cannang) {
+//     if(chieucao <= 0 || cannang <= 0){
+//         console.log("nhập số dương");
+//         return;
+//     }
 //     var bmi = cannang / (chieucao * chieucao);
 //     var tongso = (bmi * 10000).toFixed(1);
     
 //     console.log("Chỉ số BMI là: " + tongso);
-
+   
 //     if(tongso < 16){
 //         console.log(" Đánh giá gầy độ III"); 
 //     }
@@ -228,50 +232,52 @@ console.log(tong);
 //     }
 // }
 
-// chiSoBMI(170, 70); 
+// chiSoBMI(-180, 70); 
 
 // ============================== BÀI 12 ========================================= 
 
-// var date = new Date();
-// var h = date.getHours();
-// var m = date.getMinutes();
-// var s = date.getSeconds();
+// setInterval(function() {
+//     var date = new Date();
+//     var h = date.getHours();
+//     var m = date.getMinutes();
+//     var s = date.getSeconds();
+//     console.log("giờ " + h + " phút " + m +" giây " + s);
+// }, 1000);
 
-// console.log("giờ " + h + " phút " + m +" giây " + s);
 
 // =================================== Bài 11 ===================================
 
 
 // sd hàm filter 
-// function fillterFull(diem,tuoi){
-//     var students = [
-//         {
-//             fullname: "Nguyen Hiep Loi",
-//             diem: 10,
-//             tuoi: 20
-//         },
-//         {
-//             fullname: "Nguyen Hiep Trung",
-//             diem: 5,
-//             tuoi: 20
-//         },
-//         {
-//             fullname: "Nguyen Hiep Nghĩa",
-//             diem: 5,
-//             tuoi: 22
-//         },
-//         {
-//             fullname: "Nguyen Hiep Phong",
-//             diem: 5,
-//             tuoi: 30
-//         },
-//         {
-//             fullname: "Nguyen Hiep Tài",
-//             diem: 5,
-//             tuoi: 30
-//         }
-//     ]
+// var students = [
+//     {
+//         fullname: "Nguyen Hiep Loi",
+//         diem: 10,
+//         tuoi: 20
+//     },
+//     {
+//         fullname: "Nguyen Hiep Trung",
+//         diem: 5,
+//         tuoi: 20
+//     },
+//     {
+//         fullname: "Nguyen Hiep Nghĩa",
+//         diem: 5,
+//         tuoi: 22
+//     },
+//     {
+//         fullname: "Nguyen Hiep Phong",
+//         diem: 5,
+//         tuoi: 30
+//     },
+//     {
+//         fullname: "Nguyen Hiep Tài",
+//         diem: 5,
+//         tuoi: 30
+//     }
+// ]
 
+// function fillterFull(diem,tuoi){
 //     var filterDiem = students.filter(element => element.diem === diem)
 //     if(filterDiem.length === 0){
 //         console.log("Không có học sinh nào có điểm");
@@ -292,7 +298,18 @@ console.log(tong);
 //     }
   
 // }
-
+// // function tangDan(a,b){
+// //     return b.diemSo - a.diemSo 
+// // }
+/// console.log(student.sort(tangDan));
+// function sapXepTangDanTheoDiem(a,b){
+//     return a.diem - b.diem
+// }
+// function sapXepTangDanTheoTuoi(a,b){
+//     return a.tuoi - b.tuoi
+// }
+// console.log(students.sort(sapXepTangDanTheoDiem));
+// console.log(students.sort(sapXepTangDanTheoTuoi));
 // var diem = 5;
 // var tuoi = 30;
 
