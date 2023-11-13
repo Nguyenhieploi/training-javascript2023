@@ -1,15 +1,54 @@
 /*
     Bài 1: Tìm Max và Min: Viết một hàm nhận một mảng số và trả về giá trị lớn nhất và nhỏ nhất trong mảng.
 */
-var numbers = [1,2,3,4,5];
+// var numbers = [78,2,3,55,666,777];
+// var maxnumber = numbers[0];
+// var minnumber = numbers[0]
+// function max(numbers){
+//     for(var i = 1; i < numbers.length; i++){
+//         // console.log(numbers[i]);
+//             //     1 > 1
+//             //     2 > 1
+//             //     3 > 1
+//             //     4 > 1
+//             //     5 > 1
+//         if(numbers[i] > maxnumber  ){ // dkien đúng thì gán giá trị vòng lặp hiện tại vào mảng
+//             maxnumber = numbers[i]
+//         }
+//     }
+//     console.log("số lớn nhất" + maxnumber);
+    
+// }
+//  function min(numbers){
+//     for(var i = 1; i < numbers.length; i++){
+//         if(numbers[i] < minnumber){
+//             minnumber =  numbers[i]
+//         }
+//     }
+//     console.log(" Số nhỏ nhất là: " + minnumber);
+//  }
+// max(numbers)
+// min(numbers)
 
-console.log("số lớn nhất",Math.max(...numbers)); 
-console.log("số nhỏ nhất",Math.min(...numbers));
-console.log(...numbers); 
+
+// console.log("số lớn nhất",Math.max(...numbers)); 
+// console.log("số nhỏ nhất",Math.min(...numbers));
+// console.log(...numbers); 
 
 /*
     Bài 2: Định Dạng Tiền Tệ: Viết một hàm nhận một số và định dạng nó thành chuỗi tiền tệ, ví dụ: formatCurrency(5000) trả về "$5,000.00".
 */
+// function CurrencyConverter(number){
+//     var  a = number * 100;
+//     var convertStrings = a.toString();
+//     var arr = convertStrings.slice(",",)
+//     // console.log(convertStrings);
+//     var commas = arr.toString().replace(/\B(?=(\d{5})+(?!\d))/g, ",");
+//     console.log(commas);
+    
+    
+// }
+// CurrencyConverter(5000)
 // function formatCurrency(price){
 //     var formatUSD = new Intl.NumberFormat('en-US',{
 //         style: 'currency',
@@ -17,7 +56,7 @@ console.log(...numbers);
 //     })
 //     console.log(formatUSD.format(price));
 // }
-// formatCurrency(2500)
+// formatCurrency(10000)
 
 
 /*

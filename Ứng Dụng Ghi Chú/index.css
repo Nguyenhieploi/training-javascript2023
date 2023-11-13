@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.app h3{
+    text-align: center;
+}
+.app-main{
+    display: grid;
+    align-items: center;
+    margin-top: 30px;
+}
+.app-main #content{
+    width: 100%;
+    outline: none;
+    padding: 10px;
+}
+.app-main .add{
+    margin-top: 30px;
+    border: none;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 30px;
+    outline: none;
+    background: rgb(30,30,121);
+    background: linear-gradient(90deg, rgba(30,30,121,1) 0%, rgba(45,98,138,1) 100%, rgba(245, 16, 230, 0.986) 100%);
+}
+.list{
+    margin-top: 50px;
+}
+.list li{
+    list-style: none;
+    padding: 10px 10px;
+    background: #ddd;
+    margin-top: 10px;
+}
+.remove{
+    color: red !important;
+    cursor: pointer;
+    margin-left: 10px;
+}
