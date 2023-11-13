@@ -5,7 +5,7 @@ var numbers = [1,2,3,4,5];
 
 console.log("số lớn nhất",Math.max(...numbers)); 
 console.log("số nhỏ nhất",Math.min(...numbers));
-console.log(...numbers);
+console.log(...numbers); test
 
 /*
     Bài 2: Định Dạng Tiền Tệ: Viết một hàm nhận một số và định dạng nó thành chuỗi tiền tệ, ví dụ: formatCurrency(5000) trả về "$5,000.00".
