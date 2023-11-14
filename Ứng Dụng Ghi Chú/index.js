@@ -1,17 +1,24 @@
 var list = [];
-
-
-function add(){
+window.onload = function(){
     var storageKey = 'listNote';
     // GetItem - Chuyển từ chuỗi JSON sang đối tượng 
     var storageList = localStorage.getItem(storageKey);
+   
     if(storageList){
         list = JSON.parse(storageList);
-    }
-    else{
+        var FinalID = list[list.length-1]; // lấy giá trị cuối cùng trong mảng
+        var Idso = parseInt(FinalID.id); // chuyển từ chuỗi sang số
+        document.getElementById('id').value = Idso + 1
+    }else{
         list = []
     }
+    console.log('Dữ liệu từ localStorage:', list);
+    show();
+   
+}
 
+
+function add(){
     var note = {
         id:1,
         content: null
@@ -39,12 +46,10 @@ function add(){
     // Gọi hàm show list note đã thêm
    show()
 
-   // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
-   localStorage.setItem(storageKey,JSON.stringify(list))
 }
 function show(){
     var results =  document.getElementById("results");
-    results.innerHTML = '';
+    results.innerHTML = ''; // làm rông nội dung 
 
     list.forEach(element =>{
         results.innerHTML += 
@@ -58,15 +63,23 @@ function show(){
       
         `
     })
+    
+    var storageKey = 'listNote';
+   // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
+   localStorage.setItem(storageKey,JSON.stringify(list))
   
 }
-console.log("danh sách hiện tại là:",list);
+
+
 
 function remove(id){
-    console.log("id là", id);
+    console.log("id là", id);           
      list = list.filter((element) => element.id !== id);
+     // trả về những đối tượng có id khác với id truyền vào
+     console.log(list);
     show();
 }
+
 
 function edit(id){
    var editItem = list.find((element) => {
@@ -77,6 +90,7 @@ function edit(id){
    var editId = document.getElementById("edit-id");
    var editContent = document.getElementById("edit-content");
 
+   // HTML sẽ nhận giá trị từ biến editItem
    editId.value = editItem.id;
    editContent.value = editItem.content
     document.getElementById("edit-main").style.display = "block";
@@ -89,8 +103,10 @@ function saveEdit(){
     var editContent = document.getElementById("edit-content");
     
     // tìm vị trí có id = với id edit
-    var editedItemIndex = list.findIndex((element) => element.id === editId.value);
-    console.log(editedItemIndex);
-    list[editedItemIndex].content = editContent.value;
+    var ItemEdit = list.find((element) => element.id === editId.value);
+   if(ItemEdit){
+    // biến ItemEdit sẽ nhận giá trị từ HTML trả về
+    ItemEdit.content = editContent.value 
+   }
     show();
 }
