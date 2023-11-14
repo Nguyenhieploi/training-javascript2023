@@ -2,7 +2,9 @@ var list = [];
 
 
 function add(){
+    // Tạo key localstorage 
     var storageKey = 'listNote';
+
     // GetItem - Chuyển từ chuỗi JSON sang đối tượng 
     var storageList = localStorage.getItem(storageKey);
     if(storageList){
@@ -13,7 +15,7 @@ function add(){
     }
 
     var note = {
-        id:1,
+        id:null,
         content: null
     }
     var getId = document.getElementById("id");
@@ -27,7 +29,7 @@ function add(){
         alert('Vui lòng nhập đầy đủ thông tin');
         return;
     }
-
+    alert("đã thêm thành công")
     list.push(note);
     
     // Thêm mới thì làm rỗng
