@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./index.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+
+<body>
+    <div class="app">
+        <div class="container">
+            <h1 class="app__title">
+                Quản lý Công Việc (Task Management)
+            </h1>
+            <div class="app__main">
+                <div class="row">
+                    <div class="col-lg-6 app__add">
+                        <h3 class="add_title">THÊM MỚI CÔNG VIỆC</h3>
+
+                        <p class="add_sub_title">ID: </p>
+                        <input type="number" id="id" value="1" disabled>
+
+                        <p class="add_sub_title">Tên công việc</p>
+                        <input type="text" id="add_name">
+
+                        <p class="add_sub_title">Ngày bắt đầu</p>
+                        <input type="datetime-local" id="add_start_day">
+
+                        <p class="add_sub_title">Ngày kết thúc</p>
+                        <input type="datetime-local" id="add_end_day">
+
+                        <!-- <p class="add_sub_title">Tình trạng</p>
+                        <select id="tinh-trang">
+                            <option value="">Chọn tình trạng</option>
+                            <option value="dang-lam">Đang làm</option>
+                            <option value="chua-lam">Chưa làm</option>
+                        </select> -->
+
+                        <button class="add_btn" onclick="add()">Thêm công việc</button>
+                    </div>
+                    <div class="col-lg-6 app_edit">
+                        <div class="app_edit_main">
+                            <h3 class="edit_title">CHỈNH SỬA CÔNG VIỆC</h3>
+
+                            <p class="edit_sub_title">ID: </p>
+                            <input type="number" id="id" value="" disabled>
+
+                            <p class="edit_sub_title">Tên công việc</p>
+                            <input type="text" id="edit_name">
+
+                            <p class="edit_sub_title">Ngày bắt đầu</p>
+                            <input type="datetime-local" id="edit_start_day">
+
+                            <p class="edit_sub_title">Ngày kết thúc</p>
+                            <input type="datetime-local" id="edit_end_day">
+
+                            <!-- <p class="edit_sub_title">Tình trạng</p>
+                            <select id="edit-tinh-trang">
+                                <option value="">Chọn tình trạng</option>
+                                <option value="dang-lam">Đang làm</option>
+                                <option value="chua-lam">Chưa làm</option>
+                            </select> -->
+
+                            <button class="add_btn" onclick="edit()">Chỉnh sửa công việc</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 app_list">
+                        <h3 class="list_title">DANH SÁCH CÔNG VIỆC</h3>
+                        <table id="taskTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên công việc</th>
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results">
+                               
+                            </tbody>
+                        </table>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>

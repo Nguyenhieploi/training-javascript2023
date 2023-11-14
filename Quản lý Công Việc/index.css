@@ -1,0 +1,74 @@
+*{
+    padding: 0;
+    margin:0;
+    box-sizing: border-box;
+}
+body{
+    background: rgb(124,124,255);
+background: linear-gradient(90deg, rgba(124,124,255,1) 0%, rgba(255,115,115,1) 100%, rgba(139,0,129,0.9864320728291317) 100%);
+color: #fff !important;
+}
+.app__title{
+    margin-top: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    
+}
+.app__main{
+    margin-top: 100px;
+}
+.app_list{
+    margin-top: 100px;
+}
+.add_title, .list_title, .edit_title{
+    font-size: 20px !important;
+}
+input,select{
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 33px;
+    padding: 0px 15px;
+    border-radius: 30px;
+}
+p{
+    margin-top: 25px !important;
+    color: rgb(241, 241, 241);
+    font-weight: 700;
+}
+.add_btn{
+    margin-top: 30px;
+    border: none;
+    padding: 10px 36px;
+    border-radius: 30px;
+    font-weight: 500;
+    background: #014f7e;
+    color: #fff;
+    outline: none;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #00000066;
+}
+.remove{
+    color: rgb(205, 34, 34) !important;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.edit{
+    color: rgb(21, 255, 0) !important;
+    cursor: pointer;
+    margin-left: 10px;
+}

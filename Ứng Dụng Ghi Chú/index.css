@@ -10,6 +10,7 @@ background: linear-gradient(90deg, rgba(76,67,232,1) 0%, rgba(241,40,209,1) 100%
 }
 .app h3{
     text-align: center;
+    margin-top: 30px;
 }
 .app-main, #edit-main{
     display: grid;

@@ -38,17 +38,22 @@
 /*
     Bài 2: Định Dạng Tiền Tệ: Viết một hàm nhận một số và định dạng nó thành chuỗi tiền tệ, ví dụ: formatCurrency(5000) trả về "$5,000.00".
 */
-// function CurrencyConverter(number){
-//     var  a = number * 100;
-//     var convertStrings = a.toString();
-//     var arr = convertStrings.slice(",",)
-//     // console.log(convertStrings);
-//     var commas = arr.toString().replace(/\B(?=(\d{5})+(?!\d))/g, ",");
-//     console.log(commas);
+function CurrencyConverter(number){
+    // var  a = number * 100;
+    // var convertStrings = a.toString();
+    // var arr = convertStrings.slice(",",)
+    // // console.log(convertStrings);
+    // var commas = arr.toString().replace(/\B(?=(\d{5})+(?!\d))/g, ",");
+    // console.log(commas);
+
+    var rounded = number.toFixed(2)
+    var currency = "$"  + rounded.toString().replace(/\B(?=(\d{5})+(?!\d))/g, ",");
+    console.log(currency);
     
-    
-// }
-// CurrencyConverter(5000)
+}
+CurrencyConverter(5000)
+
+///////////////////////////////////////////////////////////
 // function formatCurrency(price){
 //     var formatUSD = new Intl.NumberFormat('en-US',{
 //         style: 'currency',
