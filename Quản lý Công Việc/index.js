@@ -2,6 +2,7 @@ var list = [];
 document.getElementById("edit_name").disabled = true;
 document.getElementById("edit_start_day").disabled = true;
 document.getElementById("edit_end_day").disabled = true;
+
 window.onload = function(){
     var localStoreKey = 'localStoreKey';
     
@@ -165,16 +166,22 @@ setInterval(function() {
     var m = date.getMinutes();
     
     // vì hàm Date trả về 2/1/2023 8:03 nên phải + 0 phía trước khi bé hơn số 10
-    if( h < 10  && m < 10 && dd < 10 && mm < 10 ){
-        h = "0" + h
-        m = "0" + m
-        dd = "0" + dd;
-        mm = "0" + mm
+    if (h < 10) {
+        h = "0" + h;
     }
-    
+    if (m < 10) {
+        m = "0" + m;
+    }
+    if (dd < 10) {
+        dd = "0" + dd;
+    }
+    if (mm < 10) {
+        mm = "0" + mm;
+    }
+    // console.log(m);
     // Lấy ngày hiện tại theo định dạng yyyy-mm-ddTHH:mm
     var currentDate = yyyy + "-" + mm + "-" + dd + "T" + h + ":" + m;
-    // console.log("Ngày hiện tại "+ currentDate);
+    console.log("Ngày hiện tại "+ currentDate);
      
     // Lặp qua mảng list để lấy ID
     list.forEach((item) => {
