@@ -157,7 +157,7 @@ function save(){
     show()
 }
 
-setInterval(function() {
+setTimeout(function() {
     var date = new Date();
     var dd = date.getDate();
     var mm = date.getMonth() + 1;
@@ -181,25 +181,24 @@ setInterval(function() {
     // console.log(m);
     // Lấy ngày hiện tại theo định dạng yyyy-mm-ddTHH:mm
     var currentDate = yyyy + "-" + mm + "-" + dd + "T" + h + ":" + m;
-    console.log("Ngày hiện tại "+ currentDate);
+    // console.log("Ngày hiện tại "+ currentDate);
      
     // Lặp qua mảng list để lấy ID
     list.forEach((item) => {
         var getId = item.id;
      
-    // tìm ra 2 ID bằng nhau, dựa vào id để lấy endday và namejob
+    // tìm ra 2 ID bằng nhau, dựa vào id để lấy start và namejob
       var findId = list.find((element) => {
         return element.id ===  getId;
       })
 
       if(findId){
-        var timeEnd = findId.endday;
+        var timeStart = findId.startday;
         var showNameJob = findId.nameJob
-        if(timeEnd === currentDate){
+        if(timeStart === currentDate){
            alert("Đến giờ làm bài tập: " + showNameJob);
         }   
       }
     })
     
 },3000)
-
