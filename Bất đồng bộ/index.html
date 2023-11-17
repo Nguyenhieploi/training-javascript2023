@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="stylesheet" href="./index.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
@@ -13,8 +13,14 @@
       <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2>Tạo coin</h2>
-                <button class="btn-add-coin" onclick="createCoin();">Tạo coin</button>
+                <div class="app">
+                  <h2>APP TẠO COIN</h2>
+                  <button id="btn-add-coin">Tạo coin</button>
+                  <span>*1 click được +1 coin vào tài khoản</span>
+                  <div class="result">
+                      <p >Số coin hiện tại là: <span id="result"></span></p>
+                  </div>
+                </div>
             </div>
         </div>
       </div>
