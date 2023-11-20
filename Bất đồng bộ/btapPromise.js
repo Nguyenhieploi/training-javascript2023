@@ -27,4 +27,5 @@ async function thongbao(amount) {
   console.log("Thành công. Tổng số coin hiện tại:" + coin);
   document.getElementById("result").innerHTML = coin
 }
-document.getElementById('btn-add-coin').addEventListener('click', () => thongbao(1));
+
+// document.getElementById('btn-add-coin').addEventListener('click', () => thongbao(1));
