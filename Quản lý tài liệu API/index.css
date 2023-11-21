@@ -3,6 +3,9 @@
     margin: 0;
     box-sizing: border-box;
 }
+#__app{
+  width: 98%;
+}
 .vertical-tabs {
     border: 1px solid #ddd;
   }
@@ -41,11 +44,16 @@
   input{
     width: 100%;
     outline: none;
-    border: 1px solid #ddd;
+    border: 1px solid #858383;
     border-radius: 30px;
     padding: 3px 17px;
     margin-bottom: 20px !important;
-    margin-top: 10px !important;
+    margin-top: 20px !important;
+  }
+  select{
+    width: 100%;
+    border: 1px solid #a3a1a1;
+    outline: none;
   }
   .btn-add{
     margin-top: 5px;
@@ -54,12 +62,12 @@
     font-size: 14px;
     border: none;
     border-radius: 30px;
-    background-color: #4adf52;
+    background-color: #26802b;
     color: #fff;
     transition: .5s ease;
   }
   .btn-edit{
-    margin-top: 5px;
+    margin-top: 20px;
     padding: 10px 30px;
     outline: none;
     font-size: 14px;
@@ -68,6 +76,7 @@
     background-color: #dfa84a;
     color: #fff;
     transition: .5s ease;
+    margin-bottom: 50px;
   }
   .btn-add:hover{
     background-color: #43b048;
@@ -77,9 +86,12 @@
   }
   .remove{
     color: rgb(193, 32, 32) !important;
+    cursor: pointer;
   }
   .edit{
     color: #dfa84a !important;
+    cursor: pointer;
+    margin-left: 10px;
   }
   table {
     border-collapse: collapse;
@@ -97,3 +109,48 @@
     background-color: #f2f2f2;
     font-size: 14px;
   }
+  #notificationWrapper, #notifiDelete, #notifiUpdate {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: #38af3c;
+    color: #fff;
+    padding: 10px;
+    transition: top 0.5s ease-in-out;
+    border-radius: 30px;
+    text-align: center;
+    z-index: 999;
+}
+
+#notificationContent {
+    position: relative;
+}
+
+#closeNotification {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.title-app{
+  margin-top: 30px;
+}
+.mt-30{
+  margin-top: 30px !important;
+}
+.countDocument{
+  margin-top: 50px;
+  width: 250px;
+  height: 100px;
+  background-color: #2a7e19;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-radius: 30px;
+}
+#count{
+  font-size: 20px;
+}
