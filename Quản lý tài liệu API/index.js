@@ -32,7 +32,7 @@ async function addCategory() {
             return;
         }
 
-        var response = await fetch("https://65548cd163cafc694fe69f55.mockapi.io/api/v1/DanhMucSach", {
+        var response = await fetch("https://65548cd163cafc694fe69f55.mockapi.io/api/v1/danhmucsach", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ async function addCategory() {
 
 async function getAllCategory(){
     try{
-        var response = await fetch("https://65548cd163cafc694fe69f55.mockapi.io/api/v1/DanhMucSach",
+        var response = await fetch("https://65548cd163cafc694fe69f55.mockapi.io/api/v1/danhmucsach",
         {
             method:"GET",
             headers:{
@@ -82,6 +82,7 @@ async function getAllCategory(){
          `
             <td>${element.id}</td>
             <td>${element.fullname}</td>
+            
             <td>
                 <a class="remove" onclick="deleteItem('${element.id}')"><i class="fas fa-trash"></i></a>
                 <a class="edit" onclick="edit('${element.id}')"><i class="fas fa-edit"></i></a>
@@ -118,7 +119,7 @@ getAllCategory();
 
 async function deleteItem(id){
     try{
-        var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/DanhMucSach/${id}`,
+        var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/danhmucsach/${id}`,
         {
             method:"DELETE",
             headers:{
@@ -141,7 +142,7 @@ async function deleteItem(id){
 async function edit(id){
     try{
       
-        var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/DanhMucSach/${id}`,
+        var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/danhmucsach/${id}`,
         {
             method:"GET",
             headers:{
@@ -176,7 +177,7 @@ async function updateCategory(){
     var fullname = document.getElementById("editnameCategory").value
     var dataIncludes = {fullname}
 
-    var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/DanhMucSach/${getEditId}`,
+    var response = await fetch(`https://65548cd163cafc694fe69f55.mockapi.io/api/v1/danhmucsach/${getEditId}`,
     {
         method:"PUT",
         headers:{

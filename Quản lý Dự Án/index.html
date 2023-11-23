@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      <div class="container">
+        <h2 class="title">Giao diện dành cho dev</h2>
+       <div class="app">
+        <div class="row">
+          <div class="col-lg-4">
+            <h4>Dự Án</h4>
+            <p>Tên dự án</p>
+            <input type="text" id="projectName" placeholder="Nhập tên dự án">
+         
+           <div class="add">
+            <button class="btn-add" id="addProject" onclick="addProject()">
+              Thêm dự án
+            </button>
+           </div>
+
+           <div class="edit" id="edit">
+            <h5>Chỉnh sửa dự án</h5>
+            <input type="text" id="idProject"  disabled>
+            <p>Tên dự án</p>
+            <input type="text" id="editProjectName" placeholder="Nhập tên dự án">
+            <div class="add">
+              <button class="btn-save" onclick="saveEditProject()">
+                Lưu chỉnh sửa
+              </button>
+             </div>
+           </div>
+
+           <div class="history">
+            <h5>DANH SÁCH DỰ ÁN</h5>
+            <table>
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Tên dự án</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody id="resultProject">
+                 <!-- ở đây chứa table project -->
+              </tbody>
+          </table>
+           </div>
+          </div>
+          <div class="col-lg-8">
+           <div class="main">
+            <div class="app-add" id="app-add">
+              <h4>Tạo admin</h4>
+            <p>Fullname</p>
+            <input type="text" id="nameAdmin">
+            <p>Email</p>
+            <input type="text" id="emailAdmin">
+            <p>Password</p>
+            <input type="text" id="password">
+            <p>Dự án</p>
+            <select id="nameProject">
+              
+            </select>
+            <div class="add">
+              <button class="btn-add" onclick="addAdmin()">Thêm admin</button>
+            </div>
+            </div>
+
+            <!-- Edit -->
+            <div class="app-edit" id="app-edit">
+              <h4>chỉnh sửa admin</h4>
+              <input type="text" id="id" disabled>
+              <p>Fullname</p>
+              <input type="text" id="editnameAdmin">
+              <p>Email</p>
+              <input type="text" id="editemailAdmin">
+              <p>Password</p>
+              <input type="text" id="editpassword">
+              <p>Dự án</p>
+              <select id="editnameProject">
+                
+              </select>
+              <div class="add">
+                <button class="btn-save" onclick="saveAdmin()">Lưu chỉnh sửa</button>
+              </div>
+            </div>
+
+            <div class="history">
+              <h5>DANH SÁCH ADMIN HIỆN CÓ</h5>
+              <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>createAt</th>
+                        <th>updateAt</th>
+                        <th>Project</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="resultAdmin">
+                   <!-- ở đây chứa table project -->
+                </tbody>
+            </table>
+            </div>
+           </div>
+          </div>
+        </div>
+       </div>
+      </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
