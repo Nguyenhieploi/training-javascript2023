@@ -45,6 +45,7 @@ async function allProject(){
        
        var result = document.getElementById("resultProject")
        result.innerHTML = ''
+    
        dataObject.forEach(element => {
             result.innerHTML += 
             `
@@ -61,7 +62,7 @@ async function allProject(){
 
 
 
-
+       // MUỐN HIỆN OPTION CHỌN DỰ ÁN, RỒI MỚI HIỆN CÁI OPTION DATA
        // Gọi danh sách dự án vào select admin
        var nameProject = document.getElementById("nameProject")
        nameProject.innerHTML = ''

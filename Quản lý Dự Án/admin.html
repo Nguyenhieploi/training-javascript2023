@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./login.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+     <div class="app">
+        <div class="container app-bg">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="app_main" id="app_main">
+                        <h3>Tạo USER</h3>
+                        <div class="field">
+                            <p>Fullname</p>
+                            <input type="text" id="fullNameUser">
+                            <p>Email</p>
+                            <input type="text" id="emailUser">
+                            <p>Password</p>
+                            <input type="password" id="passwordUser">
+                            <div class="resgiter">
+                              <button id="resgiter"  onclick="resgiterUser()">Resgiter</button>
+                            </div>
+                          </div>
+                    </div>
+                    <div id="edit-user">
+                        <h3>EDIT USER</h3>
+                        <p>ID</p>
+                        <input type="text" id="id" disabled>
+                        <p>Fullname</p>
+                        <input type="text" id="editfullNameUser">
+                        <p>Email</p>
+                        <input type="text" id="editemailUser">
+                        <p>Password</p>
+                        <input type="password" id="editpasswordUser">
+                        <div class="resgiter">
+                          <button id="resgiter" onclick="saveUser()">Save</button>
+                        </div>
+                    </div>
+                    <h4>DANH SÁCH USER</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>CreateAt</th>
+                                    <th>UpdateAt</th>
+                                    <th>Action</th>
+                                    <th>task</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultUser">
+                                <!-- Thêm các dòng khác nếu cần -->
+                            </tbody>
+                        </table>
+                </div>
+
+
+
+
+                <div class="col-lg-6">
+                    <div class="app_main" id="app-task">
+                        <h3>Tạo STASK</h3>
+                        <div class="field">
+                            <p>Task name</p>
+                            <input type="text" id="nameTask">
+                            <p>Description</p>
+                            <input type="text" id="description">
+                            <p>expiredAt</p>
+                            <input type="datetime-local" id="expiredAt">
+                            <p>User</p>
+                            <select id="getUser">
+
+                            </select>
+                            <p>Status</p>
+                            <select name="" id="status">
+                                <option value="Chọn status">Chọn status</option>
+                                <option value="Chưa làm">Chưa làm</option>
+                                <option value="Đang làm">Đang làm</option>
+                                <option value="Đã làm">Đã làm</option>
+                            </select>
+                            <div class="resgiter">
+                              <button id="resgiter"  onclick="resgiterStask()">Resgiter</button>
+                            </div>
+                          </div>
+                    </div>
+
+                    <!-- Edit -->
+                    <div id="edit-task">
+                        <h3>EDIT TASK</h3>
+                        <p>ID</p>
+                        <input type="text" id="idtask" disabled>
+                        <p>Task name</p>
+                        <input type="text" id="editnameTask">
+                        <p>Description</p>
+                        <input type="text" id="editdescription">
+                        <p>expiredAt</p>
+                        <input type="datetime-local" id="editexpiredAt">
+                        <p>User</p>
+                        <select id="editgetUser">
+
+                        </select>
+                        <p>Status</p>
+                        <select name="" id="editstatus">
+                            <option value="Chọn status">Chọn status</option>
+                            <option value="Chưa làm">Chưa làm</option>
+                            <option value="Đang làm">Đang làm</option>
+                            <option value="Đã làm">Đã làm</option>
+                        </select>
+                        <div class="resgiter">
+                          <button id="resgiter" onclick="saveTask()">Save</button>
+                        </div>
+                    </div>
+                    <h4>DANH SÁCH TASK</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                 
+                                    <th>Name</th>
+                                    <th>description</th>
+                                    <th>expiredat</th>
+                                    <th>createdat</th>
+                                    <th>updatedat</th>
+                                    <th>status</th>
+                                    <th>user</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTask">
+                                <!-- Thêm các dòng khác nếu cần -->
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+     </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="./admin.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
