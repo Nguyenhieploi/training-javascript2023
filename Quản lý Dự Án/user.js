@@ -10,28 +10,37 @@ async function getTask(){
         var getResponse = await response.text();
         var convertObject = JSON.parse(getResponse);
 
-        var resultTask = document.getElementById("resultTask");
-        resultTask.innerHTML = ''
-
-        convertObject.forEach(element => {
-            resultTask.innerHTML +=
-            `
-            <tr>
-            <td id="idTask">${element.id}</td>
-            <td id="name">${element.fullname}</td>
-            <td>${element.description}</td>
-            <td>${element.expiredat	}</td>
-            <td>
-                <select id="changeStatus" onchange="changeStatus()">
-                    <option>${element.status}</option>
-                    <option value="Đang làm">Đang làm</option>
-                    <option value="Đã làm">Đã làm</option>
-                </select>
-            </td>
-            <td>${element.user}</td>
-            </tr>
-            `
-        });
+        
+         // Gọi admin từ local
+         var storageKey = "UserLocalstorage"
+         var storageList = localStorage.getItem(storageKey);
+         var userObject = JSON.parse(storageList);
+        
+         console.log(userObject);
+         document.getElementById("getUser").innerHTML = userObject.fullname
+         var resultTask = document.getElementById("resultTask");
+         resultTask.innerHTML = ''
+ 
+         var userTasks = convertObject.filter(task => task.user === userObject.id);
+         userTasks.forEach(task => {
+             resultTask.innerHTML +=
+                 `
+                 <tr>
+                 <td id="idTask">${task.id}</td>
+                 <td id="name">${task.fullname}</td>
+                 <td>${task.description}</td>
+                 <td>${task.expiredat}</td>
+                 <td>
+                     <select id="changeStatus" onchange="changeStatus()">
+                         <option>${task.status}</option>
+                         <option value="Đang làm">Đang làm</option>
+                         <option value="Đã làm">Đã làm</option>
+                     </select>
+                 </td>
+                
+                 </tr>
+                 `;
+         });
         
 
     }catch(error){
@@ -39,14 +48,4 @@ async function getTask(){
     }
 }
 getTask()
-async function changeStatus(){
-    try{
-        var status = document.getElementById("changeStatus").value;
-        var id = document.getElementById("idTask").value;
-        
-        var data = {status}
-        
-    }catch(error){
-        console.log(error);
-    }
-}
+

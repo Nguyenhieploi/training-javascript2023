@@ -50,18 +50,16 @@ async function loginUser(){
     var emailUser = document.getElementById("emailUser").value;
     var passwordUser = document.getElementById("passwordUser").value;
 
-    if(!emailUser || !passwordUser){
-        alert("vui lòng điền đầy đủ");
-        return;
+    var findUser = converObject.find((element) => element.email === emailUser && element.password === passwordUser)
+    if(findUser){
+        window.location = "user.html";
+        var storageKey = "UserLocalstorage"
+        localStorage.setItem(storageKey,JSON.stringify(findUser))
+    }
+    else{
+        alert("email hoặc mk không đúng")
     }
 
-
-//    converObject.forEach(element => {
-//     if(emailUser === element.email && passwordUser === element.password ){    
-//         window.location = "user.html";
-//         return true;
-//     }
-//    });
  
     
     }catch(error){

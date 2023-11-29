@@ -7,6 +7,7 @@ async function resgiterUser(){
             createat:null,
             updateat:null,
             admin: null,
+            // task:null,
         }
         var fullnameUser = document.getElementById("fullNameUser").value;
         var emailUser = document.getElementById("emailUser").value;
@@ -26,11 +27,22 @@ async function resgiterUser(){
         var getMinutes = date.getMinutes()
         var createatUser = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
 
+        // var getTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+        //     method:"GET",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // })
+
+        // var getResponse = await response.text();
+        // var taskObject = JSON.parse(getResponse)
+
         data.fullname = fullnameUser;
         data.email = emailUser;
         data.password = passwordUser;
         data.createat = createatUser;
         data.admin = admin
+        // data.task = taskObject.fullname
 
       
 
@@ -54,15 +66,7 @@ async function resgiterUser(){
     }
 }
 
-// function test(){
-//     var storageKey = 'adminLocalstorage';
-//     var storageList = localStorage.getItem(storageKey);
-//     var adminObject = JSON.parse(storageList);
-//     var filterUser = adminObject.filter((idAdmin) => idAdmin.id === convertObject.admin)
 
-//     console.log(filterUser);
-// }
-// test()
 async function getUser(){
     try{
         var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
@@ -94,11 +98,15 @@ async function getUser(){
         var getResponseTask = await responseTask.text();
         var taskObject = JSON.parse(getResponseTask)
 
-        // Cần hỏi
+        
           userObject.forEach(e => {
             if(e.admin === adminObject.id){
-                var findTask = taskObject.find(taskId => taskId.user === e.id)
-              
+                // Tìm task theo ID user 
+                var findTask = taskObject.filter(taskId => taskId.user === e.id)
+               
+                // tạo mảng mới chỉ chưa fullname
+                var tasksInfo = findTask.map(task => task.fullname).join(', ');
+               
                 resultUser.innerHTML += 
                 `
                 <tr>
@@ -113,7 +121,7 @@ async function getUser(){
                     <a class="edit" onclick="editUser('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
                 <td id="tasktest">
-                    ${findTask.fullname}
+                    ${tasksInfo}
                 </td>
                 <td>${adminObject.fullname}</td>
             </tr>
@@ -284,6 +292,7 @@ async function resgiterStask(){
         document.getElementById("getUser").value=''
 
         getTask()
+        getUser()
         console.log("status", response.status);
     }catch(error){
         console.log("error", error);
@@ -320,7 +329,7 @@ async function getTask(){
        convertObject.forEach(e => {
            var taskDate = new Date(e.expiredat);
            var findUser = userObject.find(findUser => findUser.id === e.user)
-           console.log(findUser);
+           
            if (taskDate < currentDate) {
                resultHtml += `
                    <tr style="background-color: #ff00007d;">
@@ -330,7 +339,7 @@ async function getTask(){
                    <td>${e.createdat}</td>
                    <td>${e.updatedat}</td>
                    <td>${e.status}</td>
-                   <td>${findUser.fullname}</td>
+                   <td>${findUser?.fullname || ''}</td>
                <td>
                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
@@ -346,7 +355,7 @@ async function getTask(){
                    <td>${e.createdat}</td>
                    <td>${e.updatedat}</td>
                    <td>${e.status}</td>
-                   <td>${findUser.fullname}</td>
+                   <td>${findUser?.fullname || ''}</td>
                <td>
                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
