@@ -6,11 +6,18 @@ async function resgiterUser(){
             password:null,
             createat:null,
             updateat:null,
+            admin: null,
         }
         var fullnameUser = document.getElementById("fullNameUser").value;
         var emailUser = document.getElementById("emailUser").value;
         var passwordUser = document.getElementById("passwordUser").value;
 
+          // Gọi admin từ local
+          var storageKey = 'adminLocalstorage';
+          var storageList = localStorage.getItem(storageKey);
+          var adminObject = JSON.parse(storageList);
+          var admin = adminObject.id
+        
         var date = new Date();
         var getDate = date.getDate();
         var getMonth = date.getMonth() + 1;
@@ -23,6 +30,9 @@ async function resgiterUser(){
         data.email = emailUser;
         data.password = passwordUser;
         data.createat = createatUser;
+        data.admin = admin
+
+      
 
         var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
             method:"POST",
@@ -37,12 +47,22 @@ async function resgiterUser(){
         document.getElementById("passwordUser").value = '';
 
         getUser()
+     
         console.log("status", response.status);
     }catch(error){
         console.log("error", error);
     }
 }
 
+// function test(){
+//     var storageKey = 'adminLocalstorage';
+//     var storageList = localStorage.getItem(storageKey);
+//     var adminObject = JSON.parse(storageList);
+//     var filterUser = adminObject.filter((idAdmin) => idAdmin.id === convertObject.admin)
+
+//     console.log(filterUser);
+// }
+// test()
 async function getUser(){
     try{
         var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
@@ -53,53 +73,78 @@ async function getUser(){
         })
         
         var getResponse = await response.text();
-        var convertObject = JSON.parse(getResponse)
+        var userObject = JSON.parse(getResponse)
         
         var resultUser = document.getElementById("resultUser");
         resultUser.innerHTML = '';
         
+          // Gọi admin từ local
+          var storageKey = 'adminLocalstorage';
+          var storageList = localStorage.getItem(storageKey);
+          var adminObject = JSON.parse(storageList);
+         
 
+          var responseTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
 
+        var getResponseTask = await responseTask.text();
+        var taskObject = JSON.parse(getResponseTask)
 
-        convertObject.forEach(e => {
-            resultUser.innerHTML += 
-            `
-            <tr>
-            <td>${e.id}</td>
-            <td>${e.fullname}</td>
-            <td>${e.email}</td>
-            <td>${e.password}</td>
-            <td>${e.createat}</td>
-            <td>${e.updateat}</td>
-            <td>
-                <a class="remove" onclick="deleteUser('${e.id}')"><i class="fas fa-trash"></i></a>
-                <a class="edit" onclick="editUser('${e.id}')"><i class="fas fa-edit"></i></a>
-            </td>
-            <td id="tasktest">
-
-            </td>
-        </tr>
-            `
+        // Cần hỏi
+          userObject.forEach(e => {
+            if(e.admin === adminObject.id){
+                var findTask = taskObject.find(taskId => taskId.user === e.id)
+              
+                resultUser.innerHTML += 
+                `
+                <tr>
+                <td>${e.id}</td>
+                <td>${e.fullname}</td>
+                <td>${e.email}</td>
+                <td>${e.password}</td>
+                <td>${e.createat}</td>
+                <td>${e.updateat}</td>
+                <td>
+                    <a class="remove" onclick="deleteUser('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="edit" onclick="editUser('${e.id}')"><i class="fas fa-edit"></i></a>
+                </td>
+                <td id="tasktest">
+                    ${findTask.fullname}
+                </td>
+                <td>${adminObject.fullname}</td>
+            </tr>
+                `
+            }
+        
         });
 
 
         var getUser = document.getElementById("getUser");
-        getUser.innerHTML = '';
-        convertObject.forEach(e =>{
-            getUser.innerHTML += 
-            `
-            <option value="${e.id}">${e.fullname}</option>
-            `
+        getUser.innerHTML = `<option>Chọn</option>`;
+        userObject.forEach(e =>{
+            if(e.admin === adminObject.id){
+                getUser.innerHTML += 
+                `
+                <option value="${e.id}">${e.fullname}</option>
+                `
+            }
+           
         })
 
         // get user ở chỉnh sửa task
         var editgetUser = document.getElementById("editgetUser");
         editgetUser.innerHTML = '';
-        convertObject.forEach(e =>{
-            editgetUser.innerHTML += 
-            `
-            <option value="${e.id}">${e.fullname}</option>
-            `
+        userObject.forEach(e =>{
+            if(e.admin === adminObject.id){
+                editgetUser.innerHTML += 
+                `
+                <option value="${e.id}">${e.fullname}</option>
+                `
+            }
         })
 
     }catch(error){
@@ -259,12 +304,23 @@ async function getTask(){
         
 
         // Xu ly task quá hạn thì color màu đỏ
-
        var resultHtml = '';
        var currentDate = new Date();
 
+    
+       var responseUser = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
+        method:"GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    var getResponse = await responseUser.text();
+    var userObject = JSON.parse(getResponse)
+
        convertObject.forEach(e => {
            var taskDate = new Date(e.expiredat);
+           var findUser = userObject.find(findUser => findUser.id === e.user)
+           console.log(findUser);
            if (taskDate < currentDate) {
                resultHtml += `
                    <tr style="background-color: #ff00007d;">
@@ -274,7 +330,7 @@ async function getTask(){
                    <td>${e.createdat}</td>
                    <td>${e.updatedat}</td>
                    <td>${e.status}</td>
-                   <td>${e.user}</td>
+                   <td>${findUser.fullname}</td>
                <td>
                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
@@ -290,7 +346,7 @@ async function getTask(){
                    <td>${e.createdat}</td>
                    <td>${e.updatedat}</td>
                    <td>${e.status}</td>
-                   <td>${e.user}</td>
+                   <td>${findUser.fullname}</td>
                <td>
                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
@@ -407,18 +463,24 @@ async function getProject() {
         });
         var dataString = await apiProject.text();
         var projectObject = JSON.parse(dataString);
-        console.log("project", projectObject);
+        
 
         // Lấy dữ liệu từ localStorage
         var storageKey = 'adminLocalstorage';
         var storageList = localStorage.getItem(storageKey);
         var adminObject = JSON.parse(storageList);
-        console.log("admin", adminObject);
+     
+
+       document.getElementById("nameAdmin").innerHTML = adminObject.fullname
 
         // Tìm dự án có id tương ứng
         var selectedProject = projectObject.filter(project => project.id === adminObject.duan);
+        var nameProject = document.getElementById("nameProject")
+        nameProject.innerHTML = ''
+        selectedProject.forEach(e => {
+            nameProject.innerHTML = e.fullname
+        })
 
-        console.log(selectedProject);
     } catch (error) {
         console.log(error);
     }

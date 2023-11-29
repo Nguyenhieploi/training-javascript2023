@@ -69,7 +69,9 @@ async function allProject(){
                     <a class="remove" onclick="deleteItem('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="edit('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
-                <td>${findAdmin?.fullname|| ''}</td> 
+                <td>
+                ${findAdmin?.fullname|| ''}
+                </td> 
             </tr>
             `
        });
@@ -224,6 +226,7 @@ async function addAdmin(){
         document.getElementById("password").value = '' ;
         document.getElementById("nameProject").value = '' ;
         allAdmin()
+        allProject()
         console.log("status", response.status);
 
 

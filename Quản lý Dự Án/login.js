@@ -23,12 +23,13 @@ async function loginAdmin(){
     if (findAdmin) {
         // Nếu là admin, chuyển đến trang "admin.html"
         window.location = "admin.html";
+        var storageKey = 'adminLocalstorage';
+        // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
+        localStorage.setItem(storageKey,JSON.stringify(findAdmin))
     } else {
         alert("Email hoặc mật khẩu không đúng.");
     }
-    var storageKey = 'adminLocalstorage';
-    // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
-    localStorage.setItem(storageKey,JSON.stringify(converObject))
+   
     
     }catch(error){
         console.log("error",error);
