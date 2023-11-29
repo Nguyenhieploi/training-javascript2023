@@ -41,21 +41,35 @@ async function allProject(){
         })
        
        var dataString = await response.text();
-       var dataObject = JSON.parse(dataString)
+       var projectObject = JSON.parse(dataString)
        
+        // // getadmin từ api
+        var getAdmin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        var string = await getAdmin.text();
+        var adminObject = JSON.parse(string)
+
+
        var result = document.getElementById("resultProject")
        result.innerHTML = ''
     
-       dataObject.forEach(element => {
+       projectObject.forEach(e => {
+        var findAdmin = adminObject.find((element) => element.duan === e.id)
+      
             result.innerHTML += 
             `
             <tr>
-                <td>${element.id}</td>
-                <td>${element.fullname}</td>
+                <td>${e.id}</td>
+                <td>${e.fullname}</td>
                 <td>
-                    <a class="remove" onclick="deleteItem('${element.id}')"><i class="fas fa-trash"></i></a>
-                    <a class="edit" onclick="edit('${element.id}')"><i class="fas fa-edit"></i></a>
+                    <a class="remove" onclick="deleteItem('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="edit" onclick="edit('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
+                <td>${findAdmin?.fullname|| ''}</td> 
             </tr>
             `
        });
@@ -65,11 +79,11 @@ async function allProject(){
        // MUỐN HIỆN OPTION CHỌN DỰ ÁN, RỒI MỚI HIỆN CÁI OPTION DATA
        // Gọi danh sách dự án vào select admin
        var nameProject = document.getElementById("nameProject")
-       nameProject.innerHTML = ''
-       dataObject.forEach(element=>{
+       nameProject.innerHTML = '<option value="">Chọn</option>'
+       projectObject.forEach(element=>{
         nameProject.innerHTML += 
         `
-        <option value="${element.fullname}">${element.fullname}</option>
+        <option value="${element.id}">${element.fullname}</option>
         `
        })
 
@@ -77,10 +91,10 @@ async function allProject(){
        // Gọi danh sách dự án vào select chỉnh sửa admin
        var editnameProject = document.getElementById("editnameProject")
        editnameProject.innerHTML = ''
-       dataObject.forEach(element=>{
+       projectObject.forEach(element=>{
         editnameProject.innerHTML += 
         `
-        <option value="${element.fullname}">${element.fullname}</option>
+        <option value="${element.id}">${element.fullname}</option>
         `
        })
     }catch(error){
@@ -228,11 +242,26 @@ async function allAdmin(){
             },
         })
         var string = await respone.text();
-        var convertObject = JSON.parse(string)
+        var adminObject = JSON.parse(string)
         
         var resultAdmin = document.getElementById("resultAdmin")
         resultAdmin.innerHTML = ''
-        convertObject.forEach(e=>{
+        
+
+        // Lấy API dự án 
+        var apiProject = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        })
+       var dataProject = await apiProject.text();
+       var projectObject = JSON.parse(dataProject)
+
+       adminObject.forEach(e=>{
+
+            var findProject = projectObject.find((element) => element.id ===  e.duan)
+            console.log(findProject);
             resultAdmin.innerHTML += 
             `
             <tr>
@@ -242,7 +271,7 @@ async function allAdmin(){
                 <td>${e.password}</td>
                 <td>${e.createAt}</td>
                 <td>${e.updateAt}</td>
-                <td>${e.duan}</td>
+                <td>${findProject?.fullname || ''}</td>
                 <td>
                     <a class="remove" onclick="deleteAdmin('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="editAdmin('${e.id}')"><i class="fas fa-edit"></i></a>
@@ -330,6 +359,7 @@ async function saveAdmin(){
         document.getElementById("app-add").style.display = "block"
         document.getElementById("app-edit").style.display = "none"
         allAdmin();
+        allProject()
         console.log("status", response.status);
     }catch(error){
         console.log("error",error);

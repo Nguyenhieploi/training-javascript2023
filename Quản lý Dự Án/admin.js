@@ -51,12 +51,16 @@ async function getUser(){
                 'Content-Type': 'application/json',
             },
         })
-
+        
         var getResponse = await response.text();
         var convertObject = JSON.parse(getResponse)
         
         var resultUser = document.getElementById("resultUser");
         resultUser.innerHTML = '';
+        
+
+
+
         convertObject.forEach(e => {
             resultUser.innerHTML += 
             `
@@ -71,6 +75,9 @@ async function getUser(){
                 <a class="remove" onclick="deleteUser('${e.id}')"><i class="fas fa-trash"></i></a>
                 <a class="edit" onclick="editUser('${e.id}')"><i class="fas fa-edit"></i></a>
             </td>
+            <td id="tasktest">
+
+            </td>
         </tr>
             `
         });
@@ -81,7 +88,7 @@ async function getUser(){
         convertObject.forEach(e =>{
             getUser.innerHTML += 
             `
-            <option value="${e.fullname}">${e.fullname}</option>
+            <option value="${e.id}">${e.fullname}</option>
             `
         })
 
@@ -91,7 +98,7 @@ async function getUser(){
         convertObject.forEach(e =>{
             editgetUser.innerHTML += 
             `
-            <option value="${e.fullname}">${e.fullname}</option>
+            <option value="${e.id}">${e.fullname}</option>
             `
         })
 
@@ -250,28 +257,52 @@ async function getTask(){
         var getResponse = await response.text();
         var convertObject = JSON.parse(getResponse)
         
-        var resultTask = document.getElementById("resultTask");
-        resultTask.innerHTML = '';
-        convertObject.forEach(e => {
-            resultTask.innerHTML += 
-            `
-            <tr>
-                <td>${e.fullname}</td>
-                <td>${e.description}</td>
-                <td>${e.expiredat}</td>
-                <td>${e.createdat}</td>
-                <td>${e.updatedat}</td>
-                <td>${e.status}</td>
-                <td>${e.user}</td>
-            <td>
-                <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
-                <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-            </td>
-        </tr>
-            `
-        });
 
+        // Xu ly task quá hạn thì color màu đỏ
 
+       var resultHtml = '';
+       var currentDate = new Date();
+
+       convertObject.forEach(e => {
+           var taskDate = new Date(e.expiredat);
+           if (taskDate < currentDate) {
+               resultHtml += `
+                   <tr style="background-color: #ff00007d;">
+                   <td>${e.fullname}</td>
+                   <td>${e.description}</td>
+                   <td>${e.expiredat}</td>
+                   <td>${e.createdat}</td>
+                   <td>${e.updatedat}</td>
+                   <td>${e.status}</td>
+                   <td>${e.user}</td>
+               <td>
+                   <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                   <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+               </td>
+                   </tr>
+               `;
+           } else {
+               resultHtml += `
+                   <tr style="background-color: none;">
+                   <td>${e.fullname}</td>
+                   <td>${e.description}</td>
+                   <td>${e.expiredat}</td>
+                   <td>${e.createdat}</td>
+                   <td>${e.updatedat}</td>
+                   <td>${e.status}</td>
+                   <td>${e.user}</td>
+               <td>
+                   <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                   <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+               </td>
+                   </tr>
+               `;
+           }
+       });
+       var resultTask = document.getElementById("resultTask");
+       resultTask.innerHTML = resultHtml;
+
+       
     }catch(error){
         console.log("error",error);
     }
@@ -365,3 +396,31 @@ async function saveTask(){
         console.log("error",error);
     }
 }
+
+async function getProject() {
+    try {
+        var apiProject = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        var dataString = await apiProject.text();
+        var projectObject = JSON.parse(dataString);
+        console.log("project", projectObject);
+
+        // Lấy dữ liệu từ localStorage
+        var storageKey = 'adminLocalstorage';
+        var storageList = localStorage.getItem(storageKey);
+        var adminObject = JSON.parse(storageList);
+        console.log("admin", adminObject);
+
+        // Tìm dự án có id tương ứng
+        var selectedProject = projectObject.filter(project => project.id === adminObject.duan);
+
+        console.log(selectedProject);
+    } catch (error) {
+        console.log(error);
+    }
+}
+getProject()
