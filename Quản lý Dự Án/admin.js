@@ -27,16 +27,6 @@ async function resgiterUser(){
         var getMinutes = date.getMinutes()
         var createatUser = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
 
-        // var getTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
-        //     method:"GET",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // })
-
-        // var getResponse = await response.text();
-        // var taskObject = JSON.parse(getResponse)
-
         data.fullname = fullnameUser;
         data.email = emailUser;
         data.password = passwordUser;
@@ -75,37 +65,52 @@ async function getUser(){
                 'Content-Type': 'application/json',
             },
         })
-        
         var getResponse = await response.text();
         var userObject = JSON.parse(getResponse)
         
-        var resultUser = document.getElementById("resultUser");
-        resultUser.innerHTML = '';
-        
-          // Gọi admin từ local
-          var storageKey = 'adminLocalstorage';
-          var storageList = localStorage.getItem(storageKey);
-          var adminObject = JSON.parse(storageList);
-         
 
-          var responseTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+        var tests = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
             method:"GET",
             headers: {
                 'Content-Type': 'application/json',
             },
         })
+        var strings = await tests.text();
+        var adminAPIs = JSON.parse(strings)
+        
 
+        var responseTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
         var getResponseTask = await responseTask.text();
         var taskObject = JSON.parse(getResponseTask)
 
-        
+
+
+          // Gọi admin từ local
+          var storageKey = 'adminLocalstorage';
+          var storageList = localStorage.getItem(storageKey);
+          var adminObject = JSON.parse(storageList);
+         var admins = adminObject.id
+      
+       
+
+        var resultUser = document.getElementById("resultUser");
+        resultUser.innerHTML = '';
+
           userObject.forEach(e => {
             if(e.admin === adminObject.id){
                 // Tìm task theo ID user 
                 var findTask = taskObject.filter(taskId => taskId.user === e.id)
-               
                 // tạo mảng mới chỉ chưa fullname
                 var tasksInfo = findTask.map(task => task.fullname).join(', ');
+                
+                // Tìm admin từ api và local 
+                var findAdmins = adminAPIs.filter(idAdmin => idAdmin.id === admins)
+                var nameAdmin = findAdmins.map(admin => admin.fullname)
                
                 resultUser.innerHTML += 
                 `
@@ -123,7 +128,7 @@ async function getUser(){
                 <td id="tasktest">
                     ${tasksInfo}
                 </td>
-                <td>${adminObject.fullname}</td>
+                <td>${nameAdmin}</td>
             </tr>
                 `
             }
@@ -309,60 +314,66 @@ async function getTask(){
         })
 
         var getResponse = await response.text();
-        var convertObject = JSON.parse(getResponse)
+        var taskObject = JSON.parse(getResponse)
         
-
-        // Xu ly task quá hạn thì color màu đỏ
-       var resultHtml = '';
-       var currentDate = new Date();
-
-    
        var responseUser = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
-        },
-    })
+            },
+        })
     var getResponse = await responseUser.text();
     var userObject = JSON.parse(getResponse)
 
-       convertObject.forEach(e => {
+      // Xu ly task quá hạn thì color màu đỏ
+      var resultHtml = '';
+      var currentDate = new Date();
+      userObject.forEach(e => {
            var taskDate = new Date(e.expiredat);
-           var findUser = userObject.find(findUser => findUser.id === e.user)
+           var filterUser = taskObject.find(findUser => findUser.user === e.id) // trả về object
            
-           if (taskDate < currentDate) {
-               resultHtml += `
-                   <tr style="background-color: #ff00007d;">
-                   <td>${e.fullname}</td>
-                   <td>${e.description}</td>
-                   <td>${e.expiredat}</td>
-                   <td>${e.createdat}</td>
-                   <td>${e.updatedat}</td>
-                   <td>${e.status}</td>
-                   <td>${findUser?.fullname || ''}</td>
-               <td>
-                   <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
-                   <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-               </td>
-                   </tr>
-               `;
-           } else {
-               resultHtml += `
-                   <tr style="background-color: none;">
-                   <td>${e.fullname}</td>
-                   <td>${e.description}</td>
-                   <td>${e.expiredat}</td>
-                   <td>${e.createdat}</td>
-                   <td>${e.updatedat}</td>
-                   <td>${e.status}</td>
-                   <td>${findUser?.fullname || ''}</td>
-               <td>
-                   <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
-                   <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-               </td>
-                   </tr>
-               `;
-           }
+           // so sánh task === với user === admin
+           console.log("id task từ api",filterUser.fullname);
+
+           
+           console.log("id user từ user",e.id);
+
+           
+            // if (taskDate < currentDate) {
+            //     resultHtml += `
+            //         <tr style="background-color: #ff00007d;">
+            //         <td>${e.fullname}</td>
+            //         <td>${e.description}</td>
+            //         <td>${e.expiredat}</td>
+            //         <td>${e.createdat}</td>
+            //         <td>${e.updatedat}</td>
+            //         <td>${e.status}</td>
+            //         <td>${filterUser?.fullname || ''}</td>
+            //     <td>_+
+            //         <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+            //         <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+            //     </td>
+            //         </tr>
+            //     `;
+            // } else {
+            //     resultHtml += `
+            //         <tr style="background-color: none;">
+            //         <td>${e.fullname}</td>
+            //         <td>${e.description}</td>
+            //         <td>${e.expiredat}</td>
+            //         <td>${e.createdat}</td>
+            //         <td>${e.updatedat}</td>
+            //         <td>${e.status}</td>
+            //         <td>${filterUser?.fullname || ''}</td>
+            //     <td>
+            //         <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+            //         <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+            //     </td>
+            //         </tr>
+            //     `;
+            // }
+           
+          
        });
        var resultTask = document.getElementById("resultTask");
        resultTask.innerHTML = resultHtml;
@@ -419,7 +430,7 @@ async function editTask(id){
         editgetUser.value = convertObject.user
         editstatus.value = convertObject.status
         
-        console.log("status", response.status);
+        
     }catch(error){
         console.log("error",error);
     }
@@ -456,42 +467,56 @@ async function saveTask(){
         document.getElementById("app-task").style.display = "block"
 
         getTask()
-
+        getUser()
     }catch(error){
         console.log("error",error);
     }
 }
 
-async function getProject() {
-    try {
-        var apiProject = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan", {
-            method: "GET",
+
+
+async function getAdmins(){
+    try{
+        var test = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
+            method:"GET",
             headers: {
                 'Content-Type': 'application/json',
             },
-        });
-        var dataString = await apiProject.text();
-        var projectObject = JSON.parse(dataString);
+        })
+        var string = await test.text();
+        var adminAPI = JSON.parse(string)
+       
+
+
+        // API Dự án
+        var projects = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        var stringProjects = await projects.text();
+        var projectAPI = JSON.parse(stringProjects)
+        // console.log("project",projectAPI);
+
+         // Gọi admin từ local
+         var storageKey = 'adminLocalstorage';
+         var storageList = localStorage.getItem(storageKey);
+         var adminObject = JSON.parse(storageList);
+         var adminlocal = adminObject.id
+
+        var findAdmin = adminAPI.find(idAdmin => idAdmin.id === adminlocal)
+        document.getElementById("nameAdmin").innerHTML = findAdmin.fullname
         
 
-        // Lấy dữ liệu từ localStorage
-        var storageKey = 'adminLocalstorage';
-        var storageList = localStorage.getItem(storageKey);
-        var adminObject = JSON.parse(storageList);
-     
-
-       document.getElementById("nameAdmin").innerHTML = adminObject.fullname
-
-        // Tìm dự án có id tương ứng
-        var selectedProject = projectObject.filter(project => project.id === adminObject.duan);
-        var nameProject = document.getElementById("nameProject")
-        nameProject.innerHTML = ''
-        selectedProject.forEach(e => {
-            nameProject.innerHTML = e.fullname
-        })
-
-    } catch (error) {
+        // Trả vể 1 object
+        var findProject = projectAPI.find(project => project.id === findAdmin.duan);
+        
+        document.getElementById("nameProject").innerHTML = findProject.fullname
+       
+    
+    }catch(error){
         console.log(error);
     }
 }
-getProject()
+getAdmins()

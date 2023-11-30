@@ -58,8 +58,10 @@ async function allProject(){
        result.innerHTML = ''
     
        projectObject.forEach(e => {
-        var findAdmin = adminObject.find((element) => element.duan === e.id)
-      
+            // Tìm admin theo dự án
+            var findAdmin = adminObject.filter((element) => element.duan === e.id) // trả về 1 mảng
+            var nameAdmin = findAdmin.map(fullname => fullname.fullname).join(', ')
+           
             result.innerHTML += 
             `
             <tr>
@@ -70,7 +72,7 @@ async function allProject(){
                     <a class="edit" onclick="edit('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
                 <td>
-                ${findAdmin?.fullname|| ''}
+                ${nameAdmin}
                 </td> 
             </tr>
             `
@@ -264,7 +266,7 @@ async function allAdmin(){
        adminObject.forEach(e=>{
 
             var findProject = projectObject.find((element) => element.id ===  e.duan)
-            console.log(findProject);
+            
             resultAdmin.innerHTML += 
             `
             <tr>

@@ -21,11 +21,10 @@ async function loginAdmin(){
     var findAdmin = converObject.find((element) => element.email === emailAdmin && element.password === passwordAdmin  )
    
     if (findAdmin) {
-        // Nếu là admin, chuyển đến trang "admin.html"
         window.location = "admin.html";
         var storageKey = 'adminLocalstorage';
-        // SetItem - Chuyển từ đối tượng sang chuỗi JSON 
         localStorage.setItem(storageKey,JSON.stringify(findAdmin))
+        
     } else {
         alert("Email hoặc mật khẩu không đúng.");
     }

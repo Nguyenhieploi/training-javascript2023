@@ -6,23 +6,34 @@ async function getTask(){
                 'Content-Type': 'application/json',
             },
         })
-        
         var getResponse = await response.text();
         var convertObject = JSON.parse(getResponse);
 
+        //API admin
+        var admin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        var getAdmin = await admin.text();
+        var adminObject = JSON.parse(getAdmin);
         
-         // Gọi admin từ local
+        console.log("admin",adminObject);
+         // Gọi user từ local
          var storageKey = "UserLocalstorage"
          var storageList = localStorage.getItem(storageKey);
          var userObject = JSON.parse(storageList);
-        
-         console.log(userObject);
+        console.log("user",userObject);
+
          document.getElementById("getUser").innerHTML = userObject.fullname
          var resultTask = document.getElementById("resultTask");
          resultTask.innerHTML = ''
  
          var userTasks = convertObject.filter(task => task.user === userObject.id);
          userTasks.forEach(task => {
+           var findAdmin =  adminObject.find(admin => admin.id === userObject.admin)
+         
              resultTask.innerHTML +=
                  `
                  <tr>
@@ -37,7 +48,7 @@ async function getTask(){
                          <option value="Đã làm">Đã làm</option>
                      </select>
                  </td>
-                
+                <td>${findAdmin.fullname}</td>
                  </tr>
                  `;
          });
