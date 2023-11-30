@@ -1,5 +1,6 @@
 async function resgiterUser(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var data = {
             fullname:null,
             email: null,
@@ -32,10 +33,7 @@ async function resgiterUser(){
         data.password = passwordUser;
         data.createat = createatUser;
         data.admin = admin
-        // data.task = taskObject.fullname
-
-      
-
+        
         var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
             method:"POST",
             headers: {
@@ -44,11 +42,11 @@ async function resgiterUser(){
             body: JSON.stringify(data)
         })
 
+        await getUser()
         document.getElementById("fullNameUser").value = '';
         document.getElementById("emailUser").value = '';
         document.getElementById("passwordUser").value = '';
-
-        getUser()
+        document.querySelector('.lds-spinner').style.display = 'none';
      
         console.log("status", response.status);
     }catch(error){
@@ -168,13 +166,15 @@ getUser()
 
 async function deleteUser(id){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
             method:"DELETE",
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-        getUser()
+        await getUser();
+        document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
     }
@@ -212,6 +212,7 @@ async function editUser(id){
 }
 async function saveUser(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var id = document.getElementById("id").value;
         var fullname = document.getElementById("editfullNameUser").value;
         var email = document.getElementById("editemailUser").value;
@@ -234,12 +235,12 @@ async function saveUser(){
             body:JSON.stringify(data)
         })
 
+        
+        await getUser()
         console.log("status",response.status);
         document.getElementById("edit-user").style.display = "none"
         document.getElementById("app_main").style.display = "block"
-
-        getUser()
-
+        document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
     }
@@ -251,6 +252,7 @@ async function saveUser(){
 
 async function resgiterStask(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var data = {
             fullname:null,
             description: null,
@@ -290,15 +292,17 @@ async function resgiterStask(){
             body: JSON.stringify(data)
         })
 
+       
+
+        await getTask()
+        await getUser();
         document.getElementById("nameTask").value='';
         document.getElementById("description").value='';
         document.getElementById("expiredAt").value='';
         document.getElementById("getUser").value='';
         document.getElementById("getUser").value=''
-
-        getTask()
-        getUser()
-        console.log("status", response.status);
+        document.querySelector('.lds-spinner').style.display = 'none';
+        
     }catch(error){
         console.log("error", error);
     }
@@ -315,7 +319,7 @@ async function getTask(){
 
         var getResponse = await response.text();
         var taskObject = JSON.parse(getResponse)
-        
+      
        var responseUser = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
         method:"GET",
         headers: {
@@ -324,54 +328,70 @@ async function getTask(){
         })
     var getResponse = await responseUser.text();
     var userObject = JSON.parse(getResponse)
+    
 
+    var getAdmin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
+        method:"GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    var string = await getAdmin.text();
+    var adminObject = JSON.parse(string)
+    
+    var storageKey = 'adminLocalstorage';
+    var storageList = localStorage.getItem(storageKey);
+    var adminObject = JSON.parse(storageList);
+    var adminlocal = adminObject.id
+    console.log(adminlocal);
+    
       // Xu ly task quá hạn thì color màu đỏ
       var resultHtml = '';
       var currentDate = new Date();
-      userObject.forEach(e => {
+      taskObject.forEach(e => {
            var taskDate = new Date(e.expiredat);
-           var filterUser = taskObject.find(findUser => findUser.user === e.id) // trả về object
-           
+           var filterUser = userObject.find(findUser => findUser.id == e.user) // trả về object
+            
+           console.log(filterUser);
            // so sánh task === với user === admin
-           console.log("id task từ api",filterUser.fullname);
+         if(adminlocal == filterUser.admin){
+            if (taskDate < currentDate) {
+                resultHtml += `
+                    <tr style="background-color: #ff00007d;">
+                    <td>${e.fullname}</td>
+                    <td>${e.description}</td>
+                    <td>${e.expiredat}</td>
+                    <td>${e.createdat}</td>
+                    <td>${e.updatedat}</td>
+                    <td>${e.status}</td>
+                    <td>${filterUser?.fullname || ''}</td>
+                <td>_+
+                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+                </td>
+                    </tr>
+                `;
+            } else {
+                resultHtml += `
+                    <tr style="background-color: none;">
+                    <td>${e.fullname}</td>
+                    <td>${e.description}</td>
+                    <td>${e.expiredat}</td>
+                    <td>${e.createdat}</td>
+                    <td>${e.updatedat}</td>
+                    <td>${e.status}</td>
+                    <td>${filterUser?.fullname || ''}</td>
+                <td>
+                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
+                </td>
+                    </tr>
+                `;
+            }
+         }
 
            
-           console.log("id user từ user",e.id);
-
            
-            // if (taskDate < currentDate) {
-            //     resultHtml += `
-            //         <tr style="background-color: #ff00007d;">
-            //         <td>${e.fullname}</td>
-            //         <td>${e.description}</td>
-            //         <td>${e.expiredat}</td>
-            //         <td>${e.createdat}</td>
-            //         <td>${e.updatedat}</td>
-            //         <td>${e.status}</td>
-            //         <td>${filterUser?.fullname || ''}</td>
-            //     <td>_+
-            //         <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
-            //         <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-            //     </td>
-            //         </tr>
-            //     `;
-            // } else {
-            //     resultHtml += `
-            //         <tr style="background-color: none;">
-            //         <td>${e.fullname}</td>
-            //         <td>${e.description}</td>
-            //         <td>${e.expiredat}</td>
-            //         <td>${e.createdat}</td>
-            //         <td>${e.updatedat}</td>
-            //         <td>${e.status}</td>
-            //         <td>${filterUser?.fullname || ''}</td>
-            //     <td>
-            //         <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
-            //         <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-            //     </td>
-            //         </tr>
-            //     `;
-            // }
            
           
        });
@@ -387,13 +407,15 @@ getTask()
 
 async function deleteTask(id){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
             method:"DELETE",
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-        getTask()
+        await getTask()
+        document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
     }
@@ -438,6 +460,7 @@ async function editTask(id){
 
 async function saveTask(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var id = document.getElementById("idtask").value;
         var fullname = document.getElementById("editnameTask").value;
         var description = document.getElementById("editdescription").value;
@@ -462,12 +485,11 @@ async function saveTask(){
             body:JSON.stringify(data)
         })
 
-        console.log("status",response.status);
-        document.getElementById("edit-task").style.display = "none"
-        document.getElementById("app-task").style.display = "block"
-
-        getTask()
-        getUser()
+        await getTask();
+        await getUser();
+        document.getElementById("edit-task").style.display = "none";
+        document.getElementById("app-task").style.display = "block";
+        document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
     }

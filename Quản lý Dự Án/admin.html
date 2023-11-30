@@ -13,6 +13,7 @@
   <body>
      <div class="app">
         <div class="container app-bg">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             <h3>Chào mừng Admin: <span id="nameAdmin"></span></h3>
             <h2>Dự án:<span id="nameProject"></span></h2>
             <div class="row">
@@ -88,9 +89,9 @@
                             <p>Status</p>
                             <select name="" id="status">
                                 <option value="Chọn status">Chọn status</option>
-                                <option value="Chưa làm">Chưa làm</option>
-                                <option value="Đang làm">Đang làm</option>
-                                <option value="Đã làm">Đã làm</option>
+                                <option value="0">Chưa làm</option>
+                                <option value="1">Đang làm</option>
+                                <option value="2">Đã làm</option>
                             </select>
                             <div class="resgiter">
                               <button id="resgiter"  onclick="resgiterStask()">Resgiter</button>

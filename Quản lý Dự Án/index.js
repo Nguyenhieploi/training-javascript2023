@@ -12,7 +12,7 @@ async function addProject(){
         }
         duAn.fullname = fullname;
     
-
+       document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
             method:"POST",
             headers: {
@@ -20,11 +20,10 @@ async function addProject(){
             },
             body: JSON.stringify(duAn),
         })
-        document.getElementById("projectName").value = ''
-
-        allProject()
-
-        console.log(response.status);
+       
+        await allProject()
+        document.querySelector('.lds-spinner').style.display = 'none';
+        
     }catch(error){
         console.log("error",error);
     }
@@ -109,6 +108,7 @@ allProject()
 
 async function deleteItem(id){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan/${id}`,{
             method:"DELETE",
             headers: {
@@ -116,7 +116,10 @@ async function deleteItem(id){
             },
         })
         console.log(response.status);
-        allProject()
+      
+        await allProject();
+        document.querySelector('.lds-spinner').style.display = 'none';
+        
     }catch(error){
         console.log("error",error);
     }
@@ -152,6 +155,7 @@ async function saveEditProject(){
         var fullname = document.getElementById("editProjectName").value;
         var id = document.getElementById("idProject").value
         var data = {fullname}
+        document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan/${id}`,{
             method:"PUT",
             headers: {
@@ -159,29 +163,23 @@ async function saveEditProject(){
             },
             body: JSON.stringify(data)
         })
-        allProject();
+        await allProject();
+
+        document.querySelector('.lds-spinner').style.display = 'none';
+
         document.getElementById("edit").style.display = "none"
-        console.log("status", response.status);
+       
     }catch(error){
         console.log("error",error);
     }
 }
 
-// //////////////////////////////////// Admin ///////////////////////////
-// function setCreateAt(){
-//     var create = document.getElementById("CreateAt")
-//     var date = new Date();
-//     var getDate = date.getDate();
-//     var getMonth = date.getMonth() + 1;
-//     var getYears = date.getFullYear();
 
-//     var StringTime = getDate + "/" + getMonth +"/" + getYears;
-//     create.value = StringTime;
-// }
-// setCreateAt()
+// //////////////////////////////////// //////////////////////////Admin ///////////////////////////////////////////////////////////////
 
 async function addAdmin(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var data = {
             fullname:null,
             email:null,
@@ -227,8 +225,9 @@ async function addAdmin(){
         document.getElementById("emailAdmin").value = '' ;
         document.getElementById("password").value = '' ;
         document.getElementById("nameProject").value = '' ;
-        allAdmin()
-        allProject()
+        await allAdmin()
+        await allProject()
+        document.querySelector('.lds-spinner').style.display = 'none';
         console.log("status", response.status);
 
 
@@ -293,14 +292,16 @@ allAdmin()
 
 async function deleteAdmin(id){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin/${id}`,{
             method:"DELETE",
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-        allAdmin()
-        console.log("status",response.status);
+        await allAdmin();
+        document.querySelector('.lds-spinner').style.display = 'none';
+        
     }catch(error){
         console.log("error",error);
     }
@@ -339,6 +340,7 @@ async function editAdmin(id){
 
 async function saveAdmin(){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var id = document.getElementById("id").value;
         var fullname = document.getElementById("editnameAdmin").value;
         var email = document.getElementById("editemailAdmin").value;
@@ -361,11 +363,13 @@ async function saveAdmin(){
             },
             body: JSON.stringify(data)
         })
+       
+        await allAdmin();
+        await allProject();
         document.getElementById("app-add").style.display = "block"
         document.getElementById("app-edit").style.display = "none"
-        allAdmin();
-        allProject()
-        console.log("status", response.status);
+        document.querySelector('.lds-spinner').style.display = 'none';
+        
     }catch(error){
         console.log("error",error);
     }

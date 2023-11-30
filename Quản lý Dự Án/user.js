@@ -7,7 +7,7 @@ async function getTask(){
             },
         })
         var getResponse = await response.text();
-        var convertObject = JSON.parse(getResponse);
+        var taskObject = JSON.parse(getResponse);
 
         //API admin
         var admin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
@@ -19,21 +19,22 @@ async function getTask(){
         var getAdmin = await admin.text();
         var adminObject = JSON.parse(getAdmin);
         
-        console.log("admin",adminObject);
+       
          // Gọi user từ local
          var storageKey = "UserLocalstorage"
          var storageList = localStorage.getItem(storageKey);
          var userObject = JSON.parse(storageList);
-        console.log("user",userObject);
+       
 
          document.getElementById("getUser").innerHTML = userObject.fullname
+         
+         // filter ra những task task.user(id của user) và id của user từ local
+         var userTasks = taskObject.filter(task => task.user === userObject.id);
+         
          var resultTask = document.getElementById("resultTask");
          resultTask.innerHTML = ''
- 
-         var userTasks = convertObject.filter(task => task.user === userObject.id);
          userTasks.forEach(task => {
            var findAdmin =  adminObject.find(admin => admin.id === userObject.admin)
-         
              resultTask.innerHTML +=
                  `
                  <tr>
@@ -42,7 +43,7 @@ async function getTask(){
                  <td>${task.description}</td>
                  <td>${task.expiredat}</td>
                  <td>
-                     <select id="changeStatus" onchange="changeStatus()">
+                     <select id="changeStatus" onchange="changeStatus(${task.id})">
                          <option>${task.status}</option>
                          <option value="Đang làm">Đang làm</option>
                          <option value="Đã làm">Đã làm</option>
@@ -59,4 +60,22 @@ async function getTask(){
     }
 }
 getTask()
+
+async function changeStatus(taskId){
+    try{
+        var status = document.getElementById('changeStatus').value
+        var data = {status}
+        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${taskId}`,{
+            method:"PUT",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(data)
+        })
+        getTask()
+    console.log(response.status);
+    }catch(error){
+        console.log(error);
+    }
+}
 
