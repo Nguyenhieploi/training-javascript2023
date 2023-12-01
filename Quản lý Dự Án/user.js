@@ -35,6 +35,19 @@ async function getTask(){
          resultTask.innerHTML = ''
          userTasks.forEach(task => {
            var findAdmin =  adminObject.find(admin => admin.id === userObject.admin)
+           var options = `<option value="${task.status}" selected>${task.status}</option>`;
+
+            // Thêm các tùy chọn khác nếu chúng không trùng với trạng thái hiện tại
+            if (task.status !== "Chưa làm"){
+                options += `<option value="Chưa làm">Chưa làm</option>`;
+            } 
+            if (task.status !== "Đang làm"){
+                options += `<option value="Đang làm">Đang làm</option>`;
+            }
+            if (task.status !== "Đã làm"){
+                options += `<option value="Đã làm">Đã làm</option>`;
+            }
+
              resultTask.innerHTML +=
                  `
                  <tr>
@@ -44,10 +57,7 @@ async function getTask(){
                  <td>${task.expiredat}</td>
                  <td>
                      <select id="changeStatus" onchange="changeStatus(${task.id})">
-                         <option value="${task.status}">${task.status}</option>
-                         <option value="Chưa làm">Chưa làm</option>
-                         <option value="Đang làm">Đang làm</option>
-                         <option value="Đã làm">Đã làm</option>
+                        ${options}
                      </select>
                  </td>
                 <td>${findAdmin.fullname}</td>
