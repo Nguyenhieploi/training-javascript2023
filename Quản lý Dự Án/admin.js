@@ -266,7 +266,7 @@ async function resgiterStask(){
         var description = document.getElementById("description").value;
         var expiredAt = document.getElementById("expiredAt").value;
         var user = document.getElementById("getUser").value;
-        var status = document.getElementById("status").value
+       
 
         var date = new Date();
         var getDate = date.getDate();
@@ -281,7 +281,7 @@ async function resgiterStask(){
         data.expiredat = expiredAt;
         data.createdat = createdat;
         data.user = user;
-        data.status = status;
+       
        
 
         var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{

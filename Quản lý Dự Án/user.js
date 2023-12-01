@@ -44,7 +44,8 @@ async function getTask(){
                  <td>${task.expiredat}</td>
                  <td>
                      <select id="changeStatus" onchange="changeStatus(${task.id})">
-                         <option>${task.status}</option>
+                         <option value="${task.status}">${task.status}</option>
+                         <option value="Chưa làm">Chưa làm</option>
                          <option value="Đang làm">Đang làm</option>
                          <option value="Đã làm">Đã làm</option>
                      </select>
@@ -63,6 +64,7 @@ getTask()
 
 async function changeStatus(taskId){
     try{
+        document.querySelector('.lds-spinner').style.display = 'block';
         var status = document.getElementById('changeStatus').value
         var data = {status}
         var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${taskId}`,{
@@ -72,7 +74,8 @@ async function changeStatus(taskId){
             },
             body:JSON.stringify(data)
         })
-        getTask()
+        await getTask();
+        document.querySelector('.lds-spinner').style.display = 'none';
     console.log(response.status);
     }catch(error){
         console.log(error);
