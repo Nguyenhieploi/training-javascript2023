@@ -13,15 +13,11 @@ async function addProject(){
         duAn.fullname = fullname;
     
        document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(duAn),
-        })
        
+       // Tạo project
+       var createdProject =  await createProject(duAn);
         await allProject()
+
         document.querySelector('.lds-spinner').style.display = 'none';
         
     }catch(error){
@@ -31,17 +27,9 @@ async function addProject(){
 
 async function allProject(){
     try{
-        var response = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            
-        })
-       
-       var dataString = await response.text();
-       var projectObject = JSON.parse(dataString)
-       
+    
+       var allProject = await getAllProject()
+
         // // getadmin từ api
         var getAdmin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
             method:"GET",
@@ -56,7 +44,7 @@ async function allProject(){
        var result = document.getElementById("resultProject")
        result.innerHTML = ''
     
-       projectObject.forEach(e => {
+       allProject.forEach(e => {
             // Tìm admin theo dự án
             var findAdmin = adminObject.filter((element) => element.duan === e.id) // trả về 1 mảng
             var nameAdmin = findAdmin.map(fullname => fullname.fullname).join(', ')
@@ -83,7 +71,7 @@ async function allProject(){
        // Gọi danh sách dự án vào select admin
        var nameProject = document.getElementById("nameProject")
        nameProject.innerHTML = '<option value="">Chọn</option>'
-       projectObject.forEach(element=>{
+       allProject.forEach(element=>{
         nameProject.innerHTML += 
         `
         <option value="${element.id}">${element.fullname}</option>
@@ -94,7 +82,7 @@ async function allProject(){
        // Gọi danh sách dự án vào select chỉnh sửa admin
        var editnameProject = document.getElementById("editnameProject")
        editnameProject.innerHTML = ''
-       projectObject.forEach(element=>{
+       allProject.forEach(element=>{
         editnameProject.innerHTML += 
         `
         <option value="${element.id}">${element.fullname}</option>
@@ -109,17 +97,9 @@ allProject()
 async function deleteItem(id){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan/${id}`,{
-            method:"DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        console.log(response.status);
-      
+        var deleteProjects = await deleteProject(id);
         await allProject();
         document.querySelector('.lds-spinner').style.display = 'none';
-        
     }catch(error){
         console.log("error",error);
     }
@@ -127,23 +107,15 @@ async function deleteItem(id){
 
 async function edit(id){
     try{
-       
-        var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan/${id}`,{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        console.log("status",response.status);
-        var dataString = await response.text();
-        var data = JSON.parse(dataString);
+        var getItem = await getProject(id)
 
         document.getElementById("edit").style.display = "block"
         
         var idProject = document.getElementById("idProject")
         var editProjectName = document.getElementById("editProjectName");
-        idProject.value = data.id
-        editProjectName.value = data.fullname
+
+        idProject.value = getItem.id
+        editProjectName.value = getItem.fullname
 
     }catch(error){
         console.log("error",error);
@@ -156,17 +128,11 @@ async function saveEditProject(){
         var id = document.getElementById("idProject").value
         var data = {fullname}
         document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan/${id}`,{
-            method:"PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
+
+        var saveProject = await editProject(data,id)
         await allProject();
 
         document.querySelector('.lds-spinner').style.display = 'none';
-
         document.getElementById("edit").style.display = "none"
        
     }catch(error){
@@ -207,30 +173,22 @@ async function addAdmin(){
         var getMinutes = date.getMinutes()
         var StringTime = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
         
-        
         data.fullname = getName;
         data.email = getEmail;
         data.password = getPassword;
         data.createAt = StringTime;
         data.duan = getDuan;
 
-        var response = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
+       var createdAdmin = await createAdmin(data)
+        
         document.getElementById("nameAdmin").value = '' ;
         document.getElementById("emailAdmin").value = '' ;
         document.getElementById("password").value = '' ;
         document.getElementById("nameProject").value = '' ;
         await allAdmin()
         await allProject()
+
         document.querySelector('.lds-spinner').style.display = 'none';
-        console.log("status", response.status);
-
-
     }catch(error){
         console.log("error",error);
     }
@@ -239,32 +197,20 @@ async function addAdmin(){
 
 async function allAdmin(){
     try{
-        var respone = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var string = await respone.text();
-        var adminObject = JSON.parse(string)
-        
+
+        //get Admin
+        var adminObject = await getAllAdmin();
+
         var resultAdmin = document.getElementById("resultAdmin")
         resultAdmin.innerHTML = ''
         
 
         // Lấy API dự án 
-        var apiProject = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-        })
-       var dataProject = await apiProject.text();
-       var projectObject = JSON.parse(dataProject)
+       var getProject = await getAllProject();
 
        adminObject.forEach(e=>{
 
-            var findProject = projectObject.find((element) => element.id ===  e.duan)
+            var findProject = getProject.find((element) => element.id ===  e.duan)
             
             resultAdmin.innerHTML += 
             `
@@ -293,12 +239,7 @@ allAdmin()
 async function deleteAdmin(id){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin/${id}`,{
-            method:"DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+        var deleteItem = await deleteAdmins(id)
         await allAdmin();
         document.querySelector('.lds-spinner').style.display = 'none';
         
@@ -309,29 +250,22 @@ async function deleteAdmin(id){
 
 async function editAdmin(id){
     try{
-    var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin/${id}`,{
-        method:"GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    var conversion = await response.text();
-    var dataObject = JSON.parse(conversion);
+    var editAdmin = await getAdmin(id)
 
     document.getElementById("app-add").style.display = "none"
     document.getElementById("app-edit").style.display = "block"
 
-    var id = document.getElementById("id");
+    var idAdmin = document.getElementById("id");
     var fullname = document.getElementById("editnameAdmin");
     var email = document.getElementById("editemailAdmin");
     var password = document.getElementById("editpassword")
     var duan = document.getElementById("editnameProject");
 
-    id.value = dataObject.id
-    fullname.value = dataObject.fullname
-    email.value = dataObject.email
-    password.value = dataObject.password
-    duan.value = dataObject.duan
+    idAdmin.value = editAdmin.id
+    fullname.value = editAdmin.fullname
+    email.value = editAdmin.email
+    password.value = editAdmin.password
+    duan.value = editAdmin.duan
 
     }catch(error){
         console.log("error",error);
@@ -356,13 +290,9 @@ async function saveAdmin(){
         var updateAt = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
 
         var data = {fullname,email,password,updateAt,duan}
-        var response = await fetch(`https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin/${id}`,{
-            method:"PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
+        
+        //API save editAdmin
+        var saveAdmins = await saveEditAdmin(data,id)
        
         await allAdmin();
         await allProject();

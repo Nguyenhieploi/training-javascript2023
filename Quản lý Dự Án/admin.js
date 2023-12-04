@@ -34,13 +34,8 @@ async function resgiterUser(){
         data.createat = createatUser;
         data.admin = admin
         
-        var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
+        //API create user
+        var createUsers = await createUser(data)
 
         await getUser()
         document.getElementById("fullNameUser").value = '';
@@ -259,7 +254,7 @@ async function resgiterStask(){
             expiredat:null,
             createdat:null,
             updatedat:null,
-            status:null,
+            status:"chưa làm",
             user:null,
         }
         var nameTask = document.getElementById("nameTask").value;

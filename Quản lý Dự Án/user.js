@@ -56,7 +56,7 @@ async function getTask(){
                  <td>${task.description}</td>
                  <td>${task.expiredat}</td>
                  <td>
-                     <select id="changeStatus" onchange="changeStatus(${task.id})">
+                     <select id="changeStatus${task.id}" onchange="changeStatus(${task.id})"> 
                         ${options}
                      </select>
                  </td>
@@ -75,7 +75,7 @@ getTask()
 async function changeStatus(taskId){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var status = document.getElementById('changeStatus').value
+        var status = document.getElementById(`changeStatus${taskId}`).value
         var data = {status}
         var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${taskId}`,{
             method:"PUT",
