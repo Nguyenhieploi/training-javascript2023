@@ -278,39 +278,22 @@ async function allTasks(){
             
            // so sánh task === với user === admin
          if(adminlocal == filterUser.admin){
-            if (taskDate < currentDate) {
-                resultHtml += `
-                    <tr style="background-color: #ff00007d;">
-                    <td>${e.fullname}</td>
-                    <td>${e.description}</td>
-                    <td>${e.expiredat}</td>
-                    <td>${e.createdat}</td>
-                    <td>${e.updatedat}</td>
-                    <td>${e.status}</td>
-                    <td>${filterUser?.fullname || ''}</td>
-                <td>_+
-                    <a class="remove" onclick="removeTask('${e.id}')"><i class="fas fa-trash"></i></a>
-                    <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
-                </td>
-                    </tr>
-                `;
-            } else {
-                resultHtml += `
-                    <tr style="background-color: none;">
-                    <td>${e.fullname}</td>
-                    <td>${e.description}</td>
-                    <td>${e.expiredat}</td>
-                    <td>${e.createdat}</td>
-                    <td>${e.updatedat}</td>
-                    <td>${e.status}</td>
-                    <td>${filterUser?.fullname || ''}</td>
+            var backgroundColor = taskDate < currentDate ? '#ff00007d' : 'none';
+            resultHtml += `
+            <tr style="background-color: ${backgroundColor};">
+                <td>${e.fullname}</td>
+                <td>${e.description}</td>
+                <td>${e.expiredat}</td>
+                <td>${e.createdat}</td>
+                <td>${e.updatedat}</td>
+                <td>${e.status}</td>
+                <td>${filterUser?.fullname || ''}</td>
                 <td>
                     <a class="remove" onclick="removeTask('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
-                    </tr>
-                `;
-            }
+            </tr>
+        `;
          }
 
            
