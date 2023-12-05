@@ -8,7 +8,6 @@ async function resgiterUser(){
             createat:null,
             updateat:null,
             admin: null,
-            // task:null,
         }
         var fullnameUser = document.getElementById("fullNameUser").value;
         var emailUser = document.getElementById("emailUser").value;
@@ -37,72 +36,47 @@ async function resgiterUser(){
         //API create user
         var createUsers = await createUser(data)
 
-        await getUser()
+        await allUser()
         document.getElementById("fullNameUser").value = '';
         document.getElementById("emailUser").value = '';
         document.getElementById("passwordUser").value = '';
         document.querySelector('.lds-spinner').style.display = 'none';
-     
-        console.log("status", response.status);
+        
     }catch(error){
         console.log("error", error);
     }
 }
 
 
-async function getUser(){
+async function allUser(){
     try{
-        var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var getResponse = await response.text();
-        var userObject = JSON.parse(getResponse)
+        // Get User
+        var getUsers = await getAllUser();
+
+        // Get Admin
+        var getAdmins = await getAllAdmin();
         
-
-        var tests = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var strings = await tests.text();
-        var adminAPIs = JSON.parse(strings)
-        
-
-        var responseTask = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var getResponseTask = await responseTask.text();
-        var taskObject = JSON.parse(getResponseTask)
-
-
+        var getTask = await getAllTask();
 
           // Gọi admin từ local
-          var storageKey = 'adminLocalstorage';
-          var storageList = localStorage.getItem(storageKey);
-          var adminObject = JSON.parse(storageList);
+        var storageKey = 'adminLocalstorage';
+        var storageList = localStorage.getItem(storageKey);
+        var adminObject = JSON.parse(storageList);
          var admins = adminObject.id
       
-       
-
         var resultUser = document.getElementById("resultUser");
         resultUser.innerHTML = '';
 
-          userObject.forEach(e => {
+        getUsers.forEach(e => {
             if(e.admin === adminObject.id){
                 // Tìm task theo ID user 
-                var findTask = taskObject.filter(taskId => taskId.user === e.id)
+                var findTask = getTask.filter(taskId => taskId.user === e.id)
+                console.log("find tasak",findTask);
                 // tạo mảng mới chỉ chưa fullname
                 var tasksInfo = findTask.map(task => task.fullname).join(', ');
                 
-                // Tìm admin từ api và local 
-                var findAdmins = adminAPIs.filter(idAdmin => idAdmin.id === admins)
+                // Tìm admin từ api và localstorage
+                var findAdmins = getAdmins.filter(idAdmin => idAdmin.id === admins)
                 var nameAdmin = findAdmins.map(admin => admin.fullname)
                
                 resultUser.innerHTML += 
@@ -115,7 +89,7 @@ async function getUser(){
                 <td>${e.createat}</td>
                 <td>${e.updateat}</td>
                 <td>
-                    <a class="remove" onclick="deleteUser('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="remove" onclick="removeUser('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="editUser('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
                 <td id="tasktest">
@@ -131,7 +105,7 @@ async function getUser(){
 
         var getUser = document.getElementById("getUser");
         getUser.innerHTML = `<option>Chọn</option>`;
-        userObject.forEach(e =>{
+        getUsers.forEach(e =>{
             if(e.admin === adminObject.id){
                 getUser.innerHTML += 
                 `
@@ -144,7 +118,7 @@ async function getUser(){
         // get user ở chỉnh sửa task
         var editgetUser = document.getElementById("editgetUser");
         editgetUser.innerHTML = '';
-        userObject.forEach(e =>{
+        getUsers.forEach(e =>{
             if(e.admin === adminObject.id){
                 editgetUser.innerHTML += 
                 `
@@ -157,18 +131,16 @@ async function getUser(){
         console.log("error",error);
     }
 }
-getUser()
+allUser()
 
-async function deleteUser(id){
+async function removeUser(id){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
-            method:"DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        await getUser();
+        
+        // Get user theo id
+        var deleteUsers = await deleteUser(id);
+
+        await allUser();
         document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
@@ -177,15 +149,8 @@ async function deleteUser(id){
 
 async function editUser(id){
     try{
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-
-        var getResponse = await response.text();
-        var convertObject = JSON.parse(getResponse);
+        // get User
+        var user = await getUser(id);
 
         document.getElementById("edit-user").style.display = "block"
         document.getElementById("app_main").style.display = "none"
@@ -195,12 +160,11 @@ async function editUser(id){
         var email = document.getElementById("editemailUser");
         var password = document.getElementById('editpasswordUser');
 
-        id.value = convertObject.id
-        fullname.value = convertObject.fullname
-        email.value = convertObject.email
-        password.value = convertObject.password
+        id.value = user.id
+        fullname.value = user.fullname
+        email.value = user.email
+        password.value = user.password
 
-        console.log("status", response.status);
     }catch(error){
         console.log("error",error);
     }
@@ -222,17 +186,12 @@ async function saveUser(){
         var updateat = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
 
         var data = {fullname,email,password,updateat}
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
-            method:"PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:JSON.stringify(data)
-        })
-
         
-        await getUser()
-        console.log("status",response.status);
+        // Update User API
+        var upUser = await updateUser(data,id)
+        
+        await allUser()
+       
         document.getElementById("edit-user").style.display = "none"
         document.getElementById("app_main").style.display = "block"
         document.querySelector('.lds-spinner').style.display = 'none';
@@ -277,20 +236,10 @@ async function resgiterStask(){
         data.createdat = createdat;
         data.user = user;
        
-       
-
-        var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-
-       
-
-        await getTask()
-        await getUser();
+        // API create
+        var createdTask = await createTask();
+        await allTasks()
+        await allUser();
         document.getElementById("nameTask").value='';
         document.getElementById("description").value='';
         document.getElementById("expiredAt").value='';
@@ -303,51 +252,30 @@ async function resgiterStask(){
     }
 }
 
-async function getTask(){
+async function allTasks(){
     try{
-        var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-
-        var getResponse = await response.text();
-        var taskObject = JSON.parse(getResponse)
-      
-       var responseUser = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
-        method:"GET",
-        headers: {
-            'Content-Type': 'application/json',
-            },
-        })
-    var getResponse = await responseUser.text();
-    var userObject = JSON.parse(getResponse)
+        // APi task
+        var allTask = await getAllTask();
+        
+        //API user
+        var allUser = await getAllUser();
     
-
-    var getAdmin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-        method:"GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    var string = await getAdmin.text();
-    var adminObject = JSON.parse(string)
+        // API admin
+        var allAdmin = await getAllAdmin()
     
     var storageKey = 'adminLocalstorage';
     var storageList = localStorage.getItem(storageKey);
     var adminObject = JSON.parse(storageList);
     var adminlocal = adminObject.id
-    console.log(adminlocal);
+    
     
       // Xu ly task quá hạn thì color màu đỏ
       var resultHtml = '';
       var currentDate = new Date();
-      taskObject.forEach(e => {
+      allTask.forEach(e => {
            var taskDate = new Date(e.expiredat);
-           var filterUser = userObject.find(findUser => findUser.id == e.user) // trả về object
+           var filterUser = allUser.find(findUser => findUser.id == e.user) // trả về object
             
-           console.log(filterUser);
            // so sánh task === với user === admin
          if(adminlocal == filterUser.admin){
             if (taskDate < currentDate) {
@@ -361,7 +289,7 @@ async function getTask(){
                     <td>${e.status}</td>
                     <td>${filterUser?.fullname || ''}</td>
                 <td>_+
-                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="remove" onclick="removeTask('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
                     </tr>
@@ -377,7 +305,7 @@ async function getTask(){
                     <td>${e.status}</td>
                     <td>${filterUser?.fullname || ''}</td>
                 <td>
-                    <a class="remove" onclick="deleteTask('${e.id}')"><i class="fas fa-trash"></i></a>
+                    <a class="remove" onclick="removeTask('${e.id}')"><i class="fas fa-trash"></i></a>
                     <a class="edit" onclick="editTask('${e.id}')"><i class="fas fa-edit"></i></a>
                 </td>
                     </tr>
@@ -387,8 +315,6 @@ async function getTask(){
 
            
            
-           
-          
        });
        var resultTask = document.getElementById("resultTask");
        resultTask.innerHTML = resultHtml;
@@ -398,18 +324,13 @@ async function getTask(){
         console.log("error",error);
     }
 }
-getTask()
+allTasks()
 
-async function deleteTask(id){
+async function removeTask(id){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
-            method:"DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        await getTask()
+        await deleteTask(id)
+        await allTasks()
         document.querySelector('.lds-spinner').style.display = 'none';
     }catch(error){
         console.log("error",error);
@@ -419,15 +340,8 @@ async function deleteTask(id){
 
 async function editTask(id){
     try{
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-
-        var getResponse = await response.text();
-        var convertObject = JSON.parse(getResponse);
+       //API Get Task
+       var task = await getTask(id)
 
         document.getElementById("edit-task").style.display = "block"
         document.getElementById("app-task").style.display = "none"
@@ -439,14 +353,12 @@ async function editTask(id){
         var editgetUser = document.getElementById('editgetUser');
         var editstatus = document.getElementById('editstatus');
 
-
-        idtask.value = convertObject.id
-        editnameTask.value = convertObject.fullname
-        editdescription.value = convertObject.description
-        editexpiredAt.value = convertObject.expiredat
-        editgetUser.value = convertObject.user
-        editstatus.value = convertObject.status
-        
+        idtask.value = task.id
+        editnameTask.value = task.fullname
+        editdescription.value = task.description
+        editexpiredAt.value = task.expiredat
+        editgetUser.value = task.user
+        editstatus.value = task.status
         
     }catch(error){
         console.log("error",error);
@@ -472,16 +384,11 @@ async function saveTask(){
         var updatedat = getDate + "/" + getMonth +"/" + getYears + " " + getHour + ":" + getMinutes;
 
         var data = {fullname,description,expiredat,status,user,updatedat}
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
-            method:"PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:JSON.stringify(data)
-        })
+        
+        await updateTask(data,id)
 
-        await getTask();
-        await getUser();
+        await allTasks();
+        await allUser();
         document.getElementById("edit-task").style.display = "none";
         document.getElementById("app-task").style.display = "block";
         document.querySelector('.lds-spinner').style.display = 'none';
@@ -494,26 +401,10 @@ async function saveTask(){
 
 async function getAdmins(){
     try{
-        var test = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var string = await test.text();
-        var adminAPI = JSON.parse(string)
+        var getAdmin = await getAllAdmin()
        
-
-
         // API Dự án
-        var projects = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/duan",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var stringProjects = await projects.text();
-        var projectAPI = JSON.parse(stringProjects)
+       var getProject = await getAllProject();
         // console.log("project",projectAPI);
 
          // Gọi admin từ local
@@ -522,16 +413,14 @@ async function getAdmins(){
          var adminObject = JSON.parse(storageList);
          var adminlocal = adminObject.id
 
-        var findAdmin = adminAPI.find(idAdmin => idAdmin.id === adminlocal)
+        var findAdmin = getAdmin.find(idAdmin => idAdmin.id === adminlocal)
         document.getElementById("nameAdmin").innerHTML = findAdmin.fullname
-        
-
+    
         // Trả vể 1 object
-        var findProject = projectAPI.find(project => project.id === findAdmin.duan);
+        var findProject = getProject.find(project => project.id === findAdmin.duan);
         
         document.getElementById("nameProject").innerHTML = findProject.fullname
        
-    
     }catch(error){
         console.log(error);
     }

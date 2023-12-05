@@ -1,23 +1,9 @@
-async function getTask(){
+async function allTask(){
     try{
-        var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var getResponse = await response.text();
-        var taskObject = JSON.parse(getResponse);
+        var taskUSer = await getAllTask()
 
         //API admin
-        var admin = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-            method:"GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        var getAdmin = await admin.text();
-        var adminObject = JSON.parse(getAdmin);
+        var admin = await getAllAdmin()
         
        
          // Gọi user từ local
@@ -29,12 +15,12 @@ async function getTask(){
          document.getElementById("getUser").innerHTML = userObject.fullname
          
          // filter ra những task task.user(id của user) và id của user từ local
-         var userTasks = taskObject.filter(task => task.user === userObject.id);
+         var userTasks = taskUSer.filter(task => task.user === userObject.id);
          
          var resultTask = document.getElementById("resultTask");
          resultTask.innerHTML = ''
          userTasks.forEach(task => {
-           var findAdmin =  adminObject.find(admin => admin.id === userObject.admin)
+           var findAdmin =  admin.find(admin => admin.id === userObject.admin)
            var options = `<option value="${task.status}" selected>${task.status}</option>`;
 
             // Thêm các tùy chọn khác nếu chúng không trùng với trạng thái hiện tại
@@ -70,23 +56,19 @@ async function getTask(){
         console.log(error);
     }
 }
-getTask()
+allTask()
 
-async function changeStatus(taskId){
+async function changeStatus(id){
     try{
         document.querySelector('.lds-spinner').style.display = 'block';
-        var status = document.getElementById(`changeStatus${taskId}`).value
+        var status = document.getElementById(`changeStatus${id}`).value
         var data = {status}
-        var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${taskId}`,{
-            method:"PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:JSON.stringify(data)
-        })
-        await getTask();
+        
+        await updateTask(data,id)
+        await allTask()
+        
         document.querySelector('.lds-spinner').style.display = 'none';
-    console.log(response.status);
+    
     }catch(error){
         console.log(error);
     }

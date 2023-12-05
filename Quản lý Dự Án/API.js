@@ -112,7 +112,7 @@ async function saveEditAdmin(data,id){
     return response;
 }
 
-// ============================== User =======================
+// ======================================== User ==========================================================
 async function createUser(data){
     var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
             method:"POST",
@@ -121,5 +121,102 @@ async function createUser(data){
             },
             body: JSON.stringify(data)
         })
+    return response;
+}
+async function getAllUser(){
+    var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        var getResponse = await response.text();
+        var userObject = JSON.parse(getResponse)
+        return userObject;
+}
+async function deleteUser(id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
+            method:"DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+    return response;
+}
+async function getUser(id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
+        method:"GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+
+    var getResponse = await response.text();
+    var convertObject = JSON.parse(getResponse);
+    return convertObject;
+}
+async function updateUser(data,id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user/${id}`,{
+            method:"PUT",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(data)
+        })
+    return response;
+}
+
+// ========================================== Task ===========================================================
+async function createTask(data){
+    var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+        method:"POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    return response;
+}
+async function getAllTask(){
+    var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task",{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        var getResponse = await response.text();
+        var taskObject = JSON.parse(getResponse)
+        return taskObject;
+}
+async function deleteTask(id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
+        method:"DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    return response;
+}
+async function getTask(id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
+        method:"GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+
+    var getResponse = await response.text();
+    var convertObject = JSON.parse(getResponse);
+    return convertObject;
+}
+async function updateTask(data,id){
+    var response = await fetch(`https://6560478e83aba11d99d085b1.mockapi.io/api/v1/task/${id}`,{
+        method:"PUT",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body:JSON.stringify(data)
+    })
     return response;
 }

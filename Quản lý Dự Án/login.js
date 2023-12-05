@@ -1,13 +1,7 @@
 async function loginAdmin(){
     try{
-    var response = await fetch("https://655ee6ae879575426b441e32.mockapi.io/api/v1/admin",{
-        method:"GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })  
-    var getData = await response.text();
-    var converObject = JSON.parse(getData);
+    
+    var getAdmin = await getAllAdmin();
     
     var emailAdmin = document.getElementById("emailAdmin").value;
     var passwordAdmin = document.getElementById("passwordAdmin").value;
@@ -18,7 +12,7 @@ async function loginAdmin(){
     }
 
     // dùng hàm find
-    var findAdmin = converObject.find((element) => element.email === emailAdmin && element.password === passwordAdmin  )
+    var findAdmin = getAdmin.find((element) => element.email === emailAdmin && element.password === passwordAdmin  )
    
     if (findAdmin) {
         window.location = "admin.html";
@@ -37,19 +31,12 @@ async function loginAdmin(){
 
 async function loginUser(){
     try{
-    var response = await fetch("https://6560478e83aba11d99d085b1.mockapi.io/api/v1/user",{
-        method:"GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })  
-    var getData = await response.text();
-    var converObject = JSON.parse(getData);
+    var getUser = await getAllUser();
     
     var emailUser = document.getElementById("emailUser").value;
     var passwordUser = document.getElementById("passwordUser").value;
 
-    var findUser = converObject.find((element) => element.email === emailUser && element.password === passwordUser)
+    var findUser = getUser.find((element) => element.email === emailUser && element.password === passwordUser)
     if(findUser){
         window.location = "user.html";
         var storageKey = "UserLocalstorage"
